@@ -1,1 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Email HTML</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f9; color: #333; }
+        .container { display: flex; gap: 20px; max-width: 1200px; margin: 0 auto; }
+        .panel { flex: 1; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h2 { margin-top: 0; color: #4a4a4a; }
+        label { display: block; margin-top: 10px; font-weight: bold; }
+        input, textarea { width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        textarea { height: 100px; resize: vertical; }
+        button { margin-top: 15px; padding: 10px 15px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; width: 100%; font-size: 16px; }
+        button:hover { background: #0056b3; }
+        pre { background: #272822; color: #f8f8f2; padding: 15px; border-radius: 4px; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word; }
+    </style>
+</head>
+<body>
+
+    <h1 style="text-align: center;">Generador de Plantillas de Email</h1>
+    
+    <div class="container">
+        <!-- Formulario de Entrada -->
+        <div class="panel">
+            <h2>1. Ingresa los Datos</h2>
+            <label>Título del Correo:</label>
+            <input type="text" id="titulo" value="¡Gran Descuento de Temporada!">
+            
+            <label>Contenido del Mensaje:</label>
+            <textarea id="contenido">Aprovecha nuestras ofertas exclusivas esta semana. No te pierdas la oportunidad de renovar tu espacio con precios increíbles.</textarea>
+            
+            <label>Texto del Botón:</label>
+            <input type="text" id="textoBoton" value="Comprar Ahora">
+            
+            <label>Enlace del Botón (URL):</label>
+            <input type="url" id="urlBoton" value="https://tusitio.com">
+            
+            <button onclick="generarHTML()">Generar Código HTML</button>
+        </div>
+
+        <!-- Bloque de Salida -->
+        <div class="panel">
+            <h2>2. Tu Código HTML Listo</h2>
+            <p>Copia este código y pégalo en tu plataforma de envíos (Mailchimp, SendGrid, etc.):</p>
+            <pre id="resultado">El código aparecerá aquí...</pre>
+        </div>
+    </div>
+
+    <script>
+        function generarHTML() {
+            // 1. Capturar los valores ingresados por el usuario
+            const titulo = document.getElementById('titulo').value;
+            const contenido = document.getElementById('contenido').value;
+            const textoBoton = document.getElementById('textoBoton').value;
+            const urlBoton = document.getElementById('urlBoton').value;
+
+            // 2. La plantilla HTML prediseñada (Optimizada para correos)
+            const plantillaHTML = `<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Email</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #f6f9fc; font-family: Helvetica, Arial, sans-serif;">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f6f9fc; padding: 20px 0;">
+        <tr>
+            <td align="center">
+                <table border="0" cellpadding="0" cellspacing="0" width="600" style="background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+                    <!-- Encabezado / Título -->
+                    <tr>
+                        <td style="padding: 40px 40px 20px 40px; text-align: center;">
+                            <h1 style="color: #1a1a1a; font-size: 28px; margin: 0; font-weight: bold; line-height: 1.3;">${titulo}</h1>
+                        </td>
+                    </tr>
+                    <!-- Contenido Principal -->
+                    <tr>
+                        <td style="padding: 0 40px 30px 40px; text-align: left;">
+                            <p style="color: #555555; font-size: 16px; line-height: 1.6; margin: 0;">${contenido}</p>
+                        </td>
+                    </tr>
+                    <!-- Botón de Acción -->
+                    <tr>
+                        <td style="padding: 0 40px 40px 40px; text-align: center;">
+                            <table border="0" cellpadding="0" cellspacing="0" style="margin: 0 auto;">
+                                <tr>
+                                    <td align="center" bgcolor="#2563eb" style="border-radius: 5px;">
+                                        <a href="${urlBoton}" target="_blank" style="padding: 14px 30px; display: inline-block; color: #ffffff; text-decoration: none; font-size: 16px; font-weight: bold;">${textoBoton}</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>`;
+
+            // 3. Mostrar el resultado en la pantalla escapando el HTML para que sea visible como texto
+            document.getElementById('resultado').innerText = plantillaHTML;
+        }
+    </script>
+
+</body>
+</html>
 
