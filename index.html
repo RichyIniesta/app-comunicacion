@@ -1,186 +1,416 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador de Plantillas Dinámico</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f0f2f5; color: #333; }
-        .wrapper { max-width: 1400px; margin: 0 auto; }
-        h1 { text-align: center; color: #333; font-size: 26px; margin-bottom: 20px; }
-        .container { display: flex; gap: 20px; }
-        .panel { flex: 1; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); box-sizing: border-box; }
-        .panel-output { flex: 1.2; display: flex; flex-direction: column; gap: 15px; }
-        h2 { margin-top: 0; color: #4a4a4a; font-size: 18px; border-bottom: 2px solid #f4f4f4; padding-bottom: 8px; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 14px; color: #555; }
-        input[type="text"], textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 14px; }
-        textarea { height: 100px; resize: vertical; }
-        button { padding: 12px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; width: 100%; font-size: 16px; font-weight: bold; transition: background 0.2s; margin-top: 10px; }
-        button:hover { background: #0056b3; }
-        .tabs { display: flex; border-bottom: 1px solid #ccc; }
-        .tab { padding: 10px 20px; cursor: pointer; background: #eee; border: 1px solid #ccc; border-bottom: none; border-radius: 4px 4px 0 0; font-weight: bold; margin-right: 5px; }
-        .tab.active { background: white; border-bottom: 1px solid white; color: #007bff; }
-        .tab-content { display: none; background: white; padding: 15px; border: 1px solid #ccc; border-top: none; border-radius: 0 0 4px 4px; flex-grow: 1; }
-        .tab-content.active { display: block; }
-        pre { background: #272822; color: #f8f8f2; padding: 15px; border-radius: 4px; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word; font-family: monospace; font-size: 13px; margin: 0; height: 450px; overflow-y: auto; }
-        iframe { width: 100%; height: 500px; border: 1px solid #ccc; border-radius: 4px; background: #F4F4F4; }
-        .copy-btn { background: #28a745; margin-bottom: 10px; width: auto; display: inline-block; padding: 8px 15px; font-size: 14px; }
-        .copy-btn:hover { background: #218838; }
-        .no-vars { color: #888; font-style: italic; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bradesco | Generador de Correo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bradesco-red: #CC092F;
+      --bradesco-dark-red: #9B0522;
+      --bg-gray: #F4F4F4;
+      --card-bg: #FFFFFF;
+      --text-dark: #333333;
+      --border-color: #E0E0E0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Open Sans', Arial, sans-serif;
+      background-color: var(--bg-gray);
+      color: var(--text-dark);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    header {
+      background-color: var(--bradesco-red);
+      color: white;
+      padding: 15px 30px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    header h1 { font-size: 20px; font-weight: 700; }
+    header .subtitle { font-size: 13px; opacity: 0.9; }
+
+    .main-container {
+      display: flex;
+      flex: 1;
+      height: calc(100vh - 60px);
+      overflow: hidden;
+    }
+
+    .editor-panel {
+      width: 45%;
+      background: var(--card-bg);
+      border-right: 1px solid var(--border-color);
+      overflow-y: auto;
+      padding: 25px;
+    }
+
+    .preview-panel {
+      width: 55%;
+      background: #EAEAEA;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .preview-toolbar {
+      background: white;
+      padding: 12px 25px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .preview-toolbar h2 { font-size: 16px; color: var(--text-dark); }
+    .preview-actions { display: flex; gap: 10px; }
+
+    .iframe-container {
+      flex: 1;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      overflow-y: auto;
+    }
+
+    iframe {
+      width: 100%;
+      max-width: 650px;
+      height: 100%;
+      min-height: 700px;
+      border: none;
+      background: white;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      border-radius: 4px;
+    }
+
+    .section-card {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 18px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .section-title { font-size: 15px; font-weight: 700; color: var(--bradesco-red); }
+
+    .form-group { margin-bottom: 15px; }
+    .form-group:last-child { margin-bottom: 0; }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #4A5568;
+    }
+
+    input[type="text"], input[type="url"], textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #CBD5E1;
+      border-radius: 6px;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--text-dark);
+    }
+
+    input[type="text"]:focus, input[type="url"]:focus, textarea:focus {
+      outline: none;
+      border-color: var(--bradesco-red);
+      box-shadow: 0 0 0 3px rgba(204, 9, 47, 0.1);
+    }
+
+    textarea { resize: vertical; min-height: 80px; }
+
+    /* Switch Component */
+    .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #CBD5E1; transition: .3s; border-radius: 24px;
+    }
+    .slider:before {
+      position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px;
+      background-color: white; transition: .3s; border-radius: 50%;
+    }
+    input:checked + .slider { background-color: var(--bradesco-red); }
+    input:checked + .slider:before { transform: translateX(20px); }
+
+    /* Buttons */
+    .btn {
+      padding: 10px 18px;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .btn-primary { background-color: var(--bradesco-red); color: white; }
+    .btn-primary:hover { background-color: var(--bradesco-dark-red); }
+    .btn-secondary { background-color: #E2E8F0; color: #334155; }
+    .btn-secondary:hover { background-color: #CBD5E1; }
+
+    .collapsible-content { display: block; }
+    .collapsible-content.hidden { display: none; }
+  </style>
 </head>
 <body>
 
-    <div class="wrapper">
-        <h1>🛠️ Generador de Plantillas Inteligente</h1>
-        
-        <div class="container">
-            <!-- Columna Izquierda: Pegar Plantilla y Campos Dinámicos -->
-            <div class="panel" style="display: flex; flex-direction: column; gap: 20px;">
-                <div>
-                    <h2>1. Pega tu Código HTML Base</h2>
-                    <textarea id="html_base" placeholder="Pega aquí tu HTML completo con variables como {{TITULO}}, {{TEXTO_BOTON}}, etc..." style="height: 180px;" oninput="escanearVariables()"></textarea>
-                </div>
+  <header>
+    <h1>Bradesco México</h1>
+    <div class="subtitle">Gestor y Generador de Plantillas HTML para Correo</div>
+  </header>
 
-                <div>
-                    <h2>2. Llena los Campos Detectados</h2>
-                    <div id="formulario_dinamico" class="no-vars">
-                        Pega un diseño HTML arriba para generar los campos automáticamente.
-                    </div>
-                </div>
-                
-                <button onclick="procesarPlantilla()">🔄 Procesar y Reemplazar</button>
-            </div>
-
-            <!-- Columna Derecha: Vista Previa y Código Resultante -->
-            <div class="panel-output">
-                <div class="tabs">
-                    <div class="tab active" onclick="cambiarPestaña('vista-previa')">👁️ Vista Previa</div>
-                    <div class="tab" onclick="cambiarPestaña('codigo-fuente')">💻 Código Generado</div>
-                </div>
-
-                <!-- Pestaña Vista Previa -->
-                <div id="vista-previa" class="tab-content active">
-                    <iframe id="preview-iframe"></iframe>
-                </div>
-
-                <!-- Pestaña Código HTML Final -->
-                <div id="codigo-fuente" class="tab-content">
-                    <button class="copy-btn" onclick="copiarAlPortapapeles()">📋 Copiar Código</button>
-                    <pre id="resultado-codigo">Aquí aparecerá el código final reemplazado...</pre>
-                </div>
-            </div>
+  <div class="main-container">
+    <div class="editor-panel">
+      
+      <!-- HERO -->
+      <div class="section-card">
+        <div class="section-header">
+          <span class="section-title">Imagen Principal (Hero)</span>
+          <label class="switch">
+            <input type="checkbox" id="toggle-hero" onchange="updatePreview()">
+            <span class="slider"></span>
+          </label>
         </div>
+        <div id="content-hero" class="collapsible-content hidden">
+          <div class="form-group">
+            <label for="hero-url">URL de la Imagen Hero</label>
+            <input type="url" id="hero-url" placeholder="https://ejemplo.com/imagen.jpg" oninput="updatePreview()">
+          </div>
+        </div>
+      </div>
+
+      <!-- TITULO Y SUBTITULO -->
+      <div class="section-card">
+        <div class="section-header"><span class="section-title">Encabezado y Subtítulo</span></div>
+        <div class="form-group">
+          <label for="titulo">Título Principal</label>
+          <input type="text" id="titulo" value="Aviso Importante Bradesco" oninput="updatePreview()">
+        </div>
+        <div class="form-group">
+          <label for="subtitulo">Subtítulo / Introducción</label>
+          <textarea id="subtitulo" rows="2" oninput="updatePreview()">Estimado cliente, compartimos la siguiente información relevante respecto a sus servicios.</textarea>
+        </div>
+      </div>
+
+      <!-- BLOQUE DESTACADO -->
+      <div class="section-card">
+        <div class="section-header">
+          <span class="section-title">Bloque Destacado</span>
+          <label class="switch">
+            <input type="checkbox" id="toggle-destacado" checked onchange="updatePreview()">
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div id="content-destacado" class="collapsible-content">
+          <div class="form-group">
+            <label for="titulo-destacado">Título del Bloque</label>
+            <input type="text" id="titulo-destacado" value="¡Atención Especial!" oninput="updatePreview()">
+          </div>
+          <div class="form-group">
+            <label for="contenido-destacado">Mensaje Destacado</label>
+            <textarea id="contenido-destacado" rows="3" oninput="updatePreview()">Recuerde que este trámite no tiene costo adicional y puede realizarse directamente desde su portal.</textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONTENIDO PRINCIPAL -->
+      <div class="section-card">
+        <div class="section-header"><span class="section-title">Cuerpo del Mensaje</span></div>
+        <div class="form-group">
+          <label for="contenido-principal">Contenido Principal</label>
+          <textarea id="contenido-principal" rows="4" oninput="updatePreview()">Estamos comprometidos con brindarle el mejor servicio. Si requiere asistencia personalizada o resolver dudas respecto a este comunicado, nuestro equipo está a su disposición.</textarea>
+        </div>
+      </div>
+
+      <!-- IMAGEN SECUNDARIA -->
+      <div class="section-card">
+        <div class="section-header">
+          <span class="section-title">Imagen Secundaria</span>
+          <label class="switch">
+            <input type="checkbox" id="toggle-secundaria" onchange="updatePreview()">
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div id="content-secundaria" class="collapsible-content hidden">
+          <div class="form-group">
+            <label for="secundaria-url">URL de la Imagen Secundaria</label>
+            <input type="url" id="secundaria-url" placeholder="https://ejemplo.com/banner.jpg" oninput="updatePreview()">
+          </div>
+        </div>
+      </div>
+
+      <!-- BOTON -->
+      <div class="section-card">
+        <div class="section-header">
+          <span class="section-title">Botón Call-to-Action</span>
+          <label class="switch">
+            <input type="checkbox" id="toggle-boton" checked onchange="updatePreview()">
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div id="content-boton" class="collapsible-content">
+          <div class="form-group">
+            <label for="texto-boton">Texto del Botón</label>
+            <input type="text" id="texto-boton" value="MÁS INFORMACIÓN" oninput="updatePreview()">
+          </div>
+          <div class="form-group">
+            <label for="url-boton">Enlace (URL) del Botón</label>
+            <input type="url" id="url-boton" value="https://www.bradesco.com.mx" oninput="updatePreview()">
+          </div>
+        </div>
+      </div>
+
     </div>
 
-    <script>
-        // Cambiar pestañas de la derecha
-        function cambiarPestaña(idPestaña) {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            
-            event.currentTarget.classList.add('active');
-            document.getElementById(idPestaña).classList.add('active');
-        }
+    <!-- PANEL VISTA PREVIA -->
+    <div class="preview-panel">
+      <div class="preview-toolbar">
+        <h2>Vista Previa en Tiempo Real</h2>
+        <div class="preview-actions">
+          <button class="btn btn-secondary" onclick="copyHTML()">Copiar HTML</button>
+          <button class="btn btn-primary" onclick="downloadHTML()">Descargar HTML</button>
+        </div>
+      </div>
+      <div class="iframe-container">
+        <iframe id="preview-frame"></iframe>
+      </div>
+    </div>
+  </div>
 
-        // Lee el HTML base y encuentra todo lo que esté entre {{ LLAVES }}
-        function escanearVariables() {
-            const htmlBase = document.getElementById('html_base').value;
-            const regex = /\{\{([^}]+)\}\}/g;
-            let variables = [];
-            let match;
+  <script>
+    let rawTemplate = "";
 
-            // Extraer nombres únicos de variables
-            while ((match = regex.exec(htmlBase)) !== null) {
-                let varName = match[1].trim();
-                if (!variables.includes(varName)) {
-                    variables.push(varName);
-                }
-            }
+    // Carga inicial del archivo externo de plantilla
+    async function loadTemplate() {
+      try {
+        const response = await fetch('plantilla.html');
+        if (!response.ok) throw new Error("No se pudo cargar la plantilla externa.");
+        rawTemplate = await response.text();
+        updatePreview();
+      } catch (error) {
+        console.error("Error al cargar plantilla:", error);
+        alert("Atención: Para cargar archivos externos mediante fetch(), debes ejecutar este proyecto desde un servidor local (ej. Live Server en VS Code o python -m http.server).");
+      }
+    }
 
-            const contenedorFormulario = document.getElementById('formulario_dinamico');
-            
-            if (variables.length === 0) {
-                contenedorFormulario.innerHTML = '<span class="no-vars">No se detectaron variables {{EJEMPLO}} en tu HTML.</span>';
-                return;
-            }
+    function buildHTML() {
+      if (!rawTemplate) return "";
 
-            // Guardar valores existentes temporalmente para no borrarlos mientras escribes el HTML
-            const valoresPrevios = {};
-            contenedorFormulario.querySelectorAll('input, textarea').forEach(input => {
-                valoresPrevios[input.id] = input.value;
-            });
+      let output = rawTemplate;
+      const formatText = str => str.replace(/\n/g, '<br>');
 
-            // Construir el formulario basado en las llaves detectadas
-            contenedorFormulario.innerHTML = '';
-            variables.forEach(v => {
-                const grupo = document.createElement('div');
-                grupo.className = 'form-group';
-                
-                const label = document.createElement('label');
-                label.innerText = `${v}:`;
-                
-                // Si la variable contiene palabras como "contenido" o "subtitulo", renderiza un campo más grande
-                let inputElement;
-                if (v.toLowerCase().includes('contenido') || v.toLowerCase().includes('subtitulo') || v.toLowerCase().includes('intro')) {
-                    inputElement = document.createElement('textarea');
-                } else {
-                    inputElement = document.createElement('input');
-                    inputElement.type = 'text';
-                }
-                
-                inputElement.id = `var_${v}`;
-                // Mantener el valor si ya existía antes del re-escaneo
-                inputElement.value = valoresPrevios[`var_${v}`] || ''; 
-                
-                grupo.appendChild(label);
-                grupo.appendChild(inputElement);
-                contenedorFormulario.appendChild(grupo);
-            });
-        }
+      // 1. Hero
+      const showHero = document.getElementById('toggle-hero').checked;
+      const heroUrl = document.getElementById('hero-url').value;
+      if (showHero && heroUrl.trim() !== '') {
+        const heroBlock = `<!-- ================================================= -->\n<!-- 02_HERO -->\n<!-- ================================================= -->\n<tr>\n<td align="center" width="600">\n<img src="${heroUrl}" alt="" width="600" style="display: block; width: 100%; max-width: 600px; height: auto;">\n</td>\n</tr>`;
+        output = output.replace('{{SECTION_HERO}}', heroBlock);
+      } else {
+        output = output.replace('{{SECTION_HERO}}', '');
+      }
 
-        // Ejecuta el reemplazo masivo de variables y renderiza los paneles
-        function procesarPlantilla() {
-            let htmlFinal = document.getElementById('html_base').value;
-            
-            if (!htmlFinal.trim()) {
-                alert('Por favor, ingresa primero un código HTML base en el cuadro número 1.');
-                return;
-            }
+      // 2. Títulos
+      output = output.replace('{{TITULO}}', formatText(document.getElementById('titulo').value));
+      output = output.replace('{{SUBTITULO}}', formatText(document.getElementById('subtitulo').value));
 
-            // Buscar cada campo generado dinámicamente y reemplazarlo en el texto
-            const inputs = document.getElementById('formulario_dinamico').querySelectorAll('input, textarea');
-            
-            inputs.forEach(input => {
-                const varName = input.id.replace('var_', '');
-                const varValue = input.value;
-                
-                // Reemplaza todas las ocurrencias globales de {{VARIABLE}}
-                const regex = new RegExp(`\\{\\{\\s*${varName}\\s*\\}\\}`, 'g');
-                htmlFinal = htmlFinal.replace(regex, varValue);
-            });
+      // 3. Bloque Destacado
+      const showDestacado = document.getElementById('toggle-destacado').checked;
+      if (showDestacado) {
+        const titDest = formatText(document.getElementById('titulo-destacado').value);
+        const contDest = formatText(document.getElementById('contenido-destacado').value);
+        const destBlock = `<!-- ================================================= -->\n<!-- 05_BLOQUE_DESTACADO -->\n<!-- ================================================= -->\n<tr>\n<td style="padding: 0 45px 30px 45px;" align="center">\n<table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background-color: #F8F8F8; border-top: 5px solid #CC092F; width: 100%;">\n<tr>\n<td style="padding: 25px; font-family: Arial, Helvetica, sans-serif; text-align: center;" align="center">\n<strong style="color: #CC092F; font-size: 18px; display: block; margin-bottom: 15px;">${titDest}</strong>\n<div style="font-size: 16px; line-height: 28px; color: #6e6e6e; font-family: Arial, Helvetica, sans-serif; text-align: center;">${contDest}</div>\n</td>\n</tr>\n</table>\n</td>\n</tr>`;
+        output = output.replace('{{SECTION_DESTACADO}}', destBlock);
+      } else {
+        output = output.replace('{{SECTION_DESTACADO}}', '');
+      }
 
-            // 1. Mostrar texto plano en la sección de código
-            document.getElementById('resultado-codigo').innerText = htmlFinal;
+      // 4. Cuerpo Principal
+      output = output.replace('{{CONTENIDO_PRINCIPAL}}', formatText(document.getElementById('contenido-principal').value));
 
-            // 2. Renderizar visualmente el correo dentro del Iframe
-            const iframe = document.getElementById('preview-iframe');
-            const doc = iframe.contentDocument || iframe.contentWindow.document;
-            doc.open();
-            doc.write(htmlFinal);
-            doc.close();
-        }
+      // 5. Imagen Secundaria
+      const showSecundario = document.getElementById('toggle-secundaria').checked;
+      const secUrl = document.getElementById('secundaria-url').value;
+      if (showSecundario && secUrl.trim() !== '') {
+        const secBlock = `<!-- ================================================= -->\n<!-- 07_IMAGEN_SECUNDARIA -->\n<!-- ================================================= -->\n<tr>\n<td style="padding: 0 45px 30px 45px;" align="center">\n<img src="${secUrl}" alt="" width="510" style="display: block; width: 100%; max-width: 510px; height: auto; margin: 0 auto;">\n</td>\n</tr>`;
+        output = output.replace('{{SECTION_SECUNDARIA}}', secBlock);
+      } else {
+        output = output.replace('{{SECTION_SECUNDARIA}}', '');
+      }
 
-        // Función para el botón copiar
-        function copiarAlPortapapeles() {
-            const codigo = document.getElementById('resultado-codigo').innerText;
-            navigator.clipboard.writeText(codigo).then(() => {
-                alert('¡Código final copiado al portapapeles!');
-            }).catch(err => {
-                alert('Error al copiar el código: ', err);
-            });
-        }
-    </script>
+      // 6. Botón
+      const showBoton = document.getElementById('toggle-boton').checked;
+      if (showBoton) {
+        const textoBoton = document.getElementById('texto-boton').value;
+        const urlBoton = document.getElementById('url-boton').value;
+        const btnBlock = `<!-- ================================================= -->\n<!-- 08_BOTON -->\n<!-- ================================================= -->\n<tr>\n<td style="padding: 10px 45px 40px 45px;" align="center">\n<table border="0" cellspacing="0" cellpadding="0" role="presentation" align="center">\n<tr>\n<td align="center" bgcolor="#CC092F" style="border-radius: 4px; background-color: #CC092F;">\n<a href="${urlBoton}" target="_blank" style="font-size: 16px; font-family: Arial, Helvetica, sans-serif; color: #FFFFFF; text-decoration: none; border-radius: 4px; padding: 14px 30px; border: 1px solid #CC092F; display: inline-block; font-weight: bold;">${textoBoton}</a>\n</td>\n</tr>\n</table>\n</td>\n</tr>`;
+        output = output.replace('{{SECTION_BOTON}}', btnBlock);
+      } else {
+        output = output.replace('{{SECTION_BOTON}}', '');
+      }
+
+      return output;
+    }
+
+    function updatePreview() {
+      toggleSection('toggle-hero', 'content-hero');
+      toggleSection('toggle-destacado', 'content-destacado');
+      toggleSection('toggle-secundaria', 'content-secundaria');
+      toggleSection('toggle-boton', 'content-boton');
+
+      const html = buildHTML();
+      const iframe = document.getElementById('preview-frame');
+      const doc = iframe.contentDocument || iframe.contentWindow.document;
+      doc.open();
+      doc.write(html);
+      doc.close();
+    }
+
+    function toggleSection(toggleId, contentId) {
+      const isChecked = document.getElementById(toggleId).checked;
+      const content = document.getElementById(contentId);
+      if (isChecked) content.classList.remove('hidden');
+      else content.classList.add('hidden');
+    }
+
+    function copyHTML() {
+      const html = buildHTML();
+      navigator.clipboard.writeText(html).then(() => alert('¡Código HTML copiado al portapapeles!'))
+        .catch(err => console.error('Error al copiar: ', err));
+    }
+
+    function downloadHTML() {
+      const html = buildHTML();
+      const blob = new Blob([html], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'correo-bradesco.html';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    window.onload = loadTemplate;
+  </script>
 </body>
 </html>
