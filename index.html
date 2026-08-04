@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bradesco | Generador de Correo</title>
+  <title>Bradesco | Generador de Plantillas</title>
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -34,7 +34,8 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     }
 
-    header h1 { font-size: 20px; font-weight: 700; }
+    header h1 { font-size: 20px; font-weight: 700; text-transform: lowercase; }
+    header h1::first-letter { text-transform: uppercase; }
     header .subtitle { font-size: 13px; opacity: 0.9; }
 
     .main-container {
@@ -152,6 +153,38 @@
     input:checked + .slider { background-color: var(--bradesco-red); }
     input:checked + .slider:before { transform: translateX(20px); }
 
+    /* Radio Selector (Pills) para tipo de encabezado */
+    .header-selector {
+      display: flex;
+      gap: 10px;
+      margin-top: 5px;
+    }
+    .header-option {
+      flex: 1;
+    }
+    .header-option input[type="radio"] {
+      display: none;
+    }
+    .header-option label {
+      display: block;
+      text-align: center;
+      padding: 10px 14px;
+      background: #F1F5F9;
+      border: 2px solid #CBD5E1;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 700;
+      color: #475569;
+      transition: all 0.2s ease;
+      margin-bottom: 0;
+    }
+    .header-option input[type="radio"]:checked + label {
+      background-color: #FFF5F5;
+      border-color: var(--bradesco-red);
+      color: var(--bradesco-red);
+    }
+
     /* Buttons */
     .btn {
       padding: 10px 18px;
@@ -174,13 +207,29 @@
 <body>
 
   <header>
-    <h1>bradesco México informa</h1>
-    <div class="subtitle">Generador de Plantillas HTML para Correo</div>
+    <h1>generador de plantillas</h1>
   </header>
 
   <div class="main-container">
     <div class="editor-panel">
       
+      <!-- TIPO DE ENCABEZADO (HEADER) -->
+      <div class="section-card">
+        <div class="section-header">
+          <span class="section-title">Tipo de Encabezado Principal</span>
+        </div>
+        <div class="header-selector">
+          <div class="header-option">
+            <input type="radio" id="type-informa" name="headerType" value="informa" checked onchange="updatePreview()">
+            <label for="type-informa">Bradesco Informa</label>
+          </div>
+          <div class="header-option">
+            <input type="radio" id="type-talento" name="headerType" value="talento" onchange="updatePreview()">
+            <label for="type-talento">Talento</label>
+          </div>
+        </div>
+      </div>
+
       <!-- HERO -->
       <div class="section-card">
         <div class="section-header">
@@ -238,7 +287,7 @@
         <div class="form-group">
           <label for="contenido-principal">Contenido Principal</label>
           <textarea id="contenido-principal" rows="4" oninput="updatePreview()">Estamos comprometidos con brindarle el mejor servicio. 
-            Si requiere asistencia personalizada o resolver dudas respecto a este comunicado, nuestro equipo está a su disposición.</textarea>
+Si requiere asistencia personalizada o resolver dudas respecto a este comunicado, nuestro equipo está a su disposición.</textarea>
         </div>
       </div>
 
@@ -300,6 +349,12 @@
   <script>
     let rawTemplate = "";
 
+    // URLs directas de las imágenes
+    const HEADER_IMAGES = {
+      informa: "https://github.com/RichyIniesta/app-comunicacion/blob/main/bradesco-informa-plantilla-1-1.png?raw=true",
+      talento: "https://github.com/RichyIniesta/app-comunicacion/blob/2c748b4cb507990cbb4631dc37b53963b1576bd2/bradesco-informa-plantilla-1-2.png?raw=true"
+    };
+
     // Carga inicial del archivo externo de plantilla
     async function loadTemplate() {
       try {
@@ -318,6 +373,11 @@
 
       let output = rawTemplate;
       const formatText = str => str.replace(/\n/g, '<br>');
+
+      // 0. Encabezado principal (Bradesco Informa vs Talento)
+      const selectedHeaderType = document.querySelector('input[name="headerType"]:checked').value;
+      const headerImageUrl = HEADER_IMAGES[selectedHeaderType] || HEADER_IMAGES.informa;
+      output = output.replace('{{HEADER_IMAGE}}', headerImageUrl);
 
       // 1. Hero
       const showHero = document.getElementById('toggle-hero').checked;
