@@ -445,7 +445,7 @@
             <thead>
               <tr>
                 <th style="width: 10%;">Escena</th>
-                <th style="width: 45%;">Audio / Guion Hablado</th>
+                <th style="width: 45%;">Texto en pantalla / Guion</th>
                 <th style="width: 45%;">Visual / Descripción</th>
               </tr>
             </thead>
@@ -477,7 +477,7 @@
           <button class="btn-delete" onclick="removeScene('${sceneId}')">Eliminar</button>
         </div>
         <div class="form-group">
-          <label>Audio / Guion (Texto o Diálogo):</label>
+          <label>Guión (Texto o Diálogo):</label>
           <textarea class="scene-text" placeholder="Ej. ¡Hola! ¿Conocías este nuevo beneficio..." oninput="updatePreview()">${defaultText}</textarea>
         </div>
         <div class="form-group">
@@ -555,7 +555,7 @@
 
         content += `[ESCENA ${index + 1}]\n`;
         content += `----------------------------------------------------\n`;
-        content += `AUDIO / GUION:\n${textVal}\n\n`;
+        content += `TEXTO EN PANTALLA / GUIÓN:\n${textVal}\n\n`;
         content += `VISUAL / DETALLES:\n${visualVal}\n`;
         content += `====================================================\n\n`;
       });
