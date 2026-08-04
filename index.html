@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bradesco | Herramientas de Comunicación</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bradesco-red: #CC092F;
+      --bradesco-dark-red: #9B0522;
+      --bg-gray: #F4F4F4;
+      --card-bg: #FFFFFF;
+      --text-dark: #333333;
+      --text-muted: #6E6E6E;
+      --border-color: #E0E0E0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Open Sans', Arial, sans-serif;
+      background-color: var(--bg-gray);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background-color: var(--bradesco-red);
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    }
+
+    header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    header p {
+      font-size: 15px;
+      opacity: 0.95;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 20px;
+      flex: 1;
+    }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 25px;
+    }
+
+    .tool-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      padding: 30px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .tool-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(204, 9, 47, 0.12);
+      border-color: var(--bradesco-red);
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      background-color: #FFF5F5;
+      color: var(--bradesco-red);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .tool-card h2 {
+      font-size: 20px;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .tool-card p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 25px;
+    }
+
+    .card-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--bradesco-red);
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .tool-card:hover .card-button {
+      color: var(--bradesco-dark-red);
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 12px;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border-color);
+      background: white;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Herramientas de Comunicación Bradesco</h1>
+    <p>Portal centralizado de generación de plantillas de correo y scripts para video</p>
+  </header>
+
+  <main class="container">
+    <div class="tools-grid">
+      
+      <!-- Opción 1: Generador de Correos -->
+      <a href="correos.html" class="tool-card">
+        <div>
+          <div class="card-icon">✉️</div>
+          <h2>Generador de Plantillas de Correo</h2>
+          <p>Crea comunicados en formato HTML compatibles con Outlook (Bradesco Informa / Talento). Personaliza textos, banners, módulos destacados y enlaces fácilmente.</p>
+        </div>
+        <div class="card-button">
+          Abrir Generador de Correos &rarr;
+        </div>
+      </a>
+
+      <!-- Opción 2: Generador de Scripts -->
+      <a href="script.html" class="tool-card">
+        <div>
+          <div class="card-icon">🎬</div>
+          <h2>Generador de Scripts para Videos</h2>
+          <p>Crea escaletas y guiones técnicos dinámicos por escenas para videos cortos. Organiza audio, diálogos y detalles visuales con exportación a PDF y TXT.</p>
+        </div>
+        <div class="card-button">
+          Abrir Generador de Scripts &rarr;
+        </div>
+      </a>
+
+    </div>
+  </main>
+
+  <footer>
+    Bradesco México &copy; Todos los derechos reservados.
+  </footer>
+
+</body>
+</html>
