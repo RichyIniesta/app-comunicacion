@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generador de Scripts para Videos Cortos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-red: #CC092F;
+      --brand-dark-red: #9B0522;
+      --bg-gray: #F4F4F4;
+      --card-bg: #FFFFFF;
+      --text-dark: #333333;
+      --border-color: #E0E0E0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Open Sans', Arial, sans-serif;
+      background-color: var(--bg-gray);
+      color: var(--text-dark);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    header {
+      background-color: var(--brand-red);
+      color: white;
+      padding: 15px 30px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      z-index: 10;
+    }
+
+    header h1 { font-size: 20px; font-weight: 700; }
+    header .subtitle { font-size: 13px; opacity: 0.9; }
+
+    .main-container {
+      display: flex;
+      flex: 1;
+      height: calc(100vh - 60px);
+      overflow: hidden;
+    }
+
+    /* Panel Izquierdo: Editor de Escenas */
+    .editor-panel {
+      width: 50%;
+      background: var(--card-bg);
+      border-right: 1px solid var(--border-color);
+      overflow-y: auto;
+      padding: 25px;
+    }
+
+    /* Panel Derecho: Vista Previa */
+    .preview-panel {
+      width: 50%;
+      background: #EAEAEA;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .preview-toolbar {
+      background: white;
+      padding: 12px 25px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .preview-toolbar h2 { font-size: 16px; color: var(--text-dark); }
+    .preview-actions { display: flex; gap: 10px; }
+
+    .preview-container {
+      flex: 1;
+      padding: 25px;
+      overflow-y: auto;
+    }
+
+    .script-paper {
+      background: white;
+      padding: 40px;
+      border-radius: 4px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      min-height: 100%;
+    }
+
+    .script-paper h2 {
+      text-align: center;
+      color: var(--brand-red);
+      margin-bottom: 20px;
+      font-size: 22px;
+      border-bottom: 2px solid var(--brand-red);
+      padding-bottom: 10px;
+    }
+
+    .script-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    .script-table th, .script-table td {
+      border: 1px solid #CBD5E1;
+      padding: 12px;
+      text-align: left;
+      vertical-align: top;
+      font-size: 13px;
+    }
+
+    .script-table th {
+      background-color: #F8FAFC;
+      color: #334155;
+      font-weight: 700;
+    }
+
+    .scene-card {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 18px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      position: relative;
+    }
+
+    .scene-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .scene-title { font-size: 15px; font-weight: 700; color: var(--brand-red); }
+
+    .form-group { margin-bottom: 12px; }
+    .form-group:last-child { margin-bottom: 0; }
+
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: #4A5568;
+    }
+
+    input[type="text"], textarea {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid #CBD5E1;
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: inherit;
+      color: var(--text-dark);
+    }
+
+    textarea { resize: vertical; min-height: 60px; }
+
+    /* Botones */
+    .btn {
+      padding: 10px 18px;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .btn-primary { background-color: var(--brand-red); color: white; }
+    .btn-primary:hover { background-color: var(--brand-dark-red); }
+    .btn-secondary { background-color: #E2E8F0; color: #334155; }
+    .btn-secondary:hover { background-color: #CBD5E1; }
+    .btn-delete {
+      background-color: #FEE2E2;
+      color: #DC2626;
+      border: none;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .btn-delete:hover { background-color: #FCA5A5; }
+
+    .add-scene-container {
+      margin-top: 10px;
+      margin-bottom: 30px;
+    }
+
+    /* Estilos para impresión / PDF */
+    @media print {
+      body * { visibility: hidden; }
+      .script-paper, .script-paper * { visibility: visible; }
+      .script-paper {
+        position: absolute;
+        left: 0; top: 0;
+        width: 100%;
+        padding: 0;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Generador de Scripts para Video</h1>
+    <div class="subtitle">Creador de escaletas y guiones técnicos para videos cortos</div>
+  </header>
+
+  <div class="main-container">
+    
+    <!-- PANEL DE EDICIÓN -->
+    <div class="editor-panel">
+      
+      <!-- Datos Generales -->
+      <div class="scene-card">
+        <div class="form-group">
+          <label for="script-title">Título del Video / Proyecto</label>
+          <input type="text" id="script-title" value="Promocional Producto Novedoso" oninput="updatePreview()">
+        </div>
+      </div>
+
+      <!-- Contenedor de Escenas Dinámicas -->
+      <div id="scenes-container"></div>
+
+      <div class="add-scene-container">
+        <button class="btn btn-secondary" style="width: 100%;" onclick="addScene()">+ Agregar Nueva Escena</button>
+      </div>
+
+    </div>
+
+    <!-- PANEL VISTA PREVIA -->
+    <div class="preview-panel">
+      <div class="preview-toolbar">
+        <h2>Vista Previa del Guion</h2>
+        <div class="preview-actions">
+          <button class="btn btn-secondary" onclick="exportTXT()">Descargar TXT</button>
+          <button class="btn btn-primary" onclick="printPDF()">Generar PDF / Imprimir</button>
+        </div>
+      </div>
+
+      <div class="preview-container">
+        <div class="script-paper" id="script-paper">
+          <h2 id="preview-title">Título del Video</h2>
+          <table class="script-table">
+            <thead>
+              <tr>
+                <th style="width: 10%;">Escena</th>
+                <th style="width: 45%;">Audio / Guion Hablado</th>
+                <th style="width: 45%;">Visual / Descripción</th>
+              </tr>
+            </thead>
+            <tbody id="preview-table-body">
+              <!-- Se renderiza dinámicamente -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    let sceneCount = 0;
+
+    // Agregar escena dinámicamente
+    function addScene(defaultText = '', defaultVisual = '') {
+      sceneCount++;
+      const container = document.getElementById('scenes-container');
+      const sceneId = `scene-${sceneCount}`;
+
+      const sceneCard = document.createElement('div');
+      sceneCard.className = 'scene-card';
+      sceneCard.id = sceneId;
+      sceneCard.innerHTML = `
+        <div class="scene-header">
+          <span class="scene-title">Escena <span class="scene-number"></span></span>
+          <button class="btn-delete" onclick="removeScene('${sceneId}')">Eliminar</button>
+        </div>
+        <div class="form-group">
+          <label>Audio / Guion (Texto o Diálogo):</label>
+          <textarea class="scene-text" placeholder="Ej. ¡Hola! ¿Conocías este nuevo beneficio..." oninput="updatePreview()">${defaultText}</textarea>
+        </div>
+        <div class="form-group">
+          <label>Detalles Visuales (Imagen / Video / Plano):</label>
+          <textarea class="scene-visual" placeholder="Ej. Primer plano de persona sonriendo mostrando pantalla del celular..." oninput="updatePreview()">${defaultVisual}</textarea>
+        </div>
+      `;
+
+      container.appendChild(sceneCard);
+      renumberScenes();
+      updatePreview();
+    }
+
+    // Eliminar escena
+    function removeScene(id) {
+      const card = document.getElementById(id);
+      if (card) {
+        card.remove();
+        renumberScenes();
+        updatePreview();
+      }
+    }
+
+    // Renumerar escenas secuencialmente
+    function renumberScenes() {
+      const cards = document.querySelectorAll('#scenes-container .scene-card');
+      cards.forEach((card, index) => {
+        const numberSpan = card.querySelector('.scene-number');
+        if (numberSpan) numberSpan.textContent = index + 1;
+      });
+    }
+
+    // Actualizar vista previa
+    function updatePreview() {
+      // Título
+      const titleVal = document.getElementById('script-title').value || 'Sin Título';
+      document.getElementById('preview-title').textContent = titleVal;
+
+      // Escenas
+      const tableBody = document.getElementById('preview-table-body');
+      tableBody.innerHTML = '';
+
+      const cards = document.querySelectorAll('#scenes-container .scene-card');
+      
+      if (cards.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: #94A3B8;">No hay escenas agregadas.</td></tr>';
+        return;
+      }
+
+      cards.forEach((card, index) => {
+        const textVal = card.querySelector('.scene-text').value.replace(/\n/g, '<br>') || '-';
+        const visualVal = card.querySelector('.scene-visual').value.replace(/\n/g, '<br>') || '-';
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="font-weight: bold; text-align: center;">#${index + 1}</td>
+          <td>${textVal}</td>
+          <td>${visualVal}</td>
+        `;
+        tableBody.appendChild(tr);
+      });
+    }
+
+    // Exportar archivo TXT estructurado
+    function exportTXT() {
+      const title = document.getElementById('script-title').value || 'Script_Video';
+      let content = `====================================================\n`;
+      content += `GUION TÉCNICO DE VIDEO: ${title.toUpperCase()}\n`;
+      content += `====================================================\n\n`;
+
+      const cards = document.querySelectorAll('#scenes-container .scene-card');
+      cards.forEach((card, index) => {
+        const textVal = card.querySelector('.scene-text').value || 'Sin texto';
+        const visualVal = card.querySelector('.scene-visual').value || 'Sin detalles';
+
+        content += `[ESCENA ${index + 1}]\n`;
+        content += `----------------------------------------------------\n`;
+        content += `AUDIO / GUION:\n${textVal}\n\n`;
+        content += `VISUAL / DETALLES:\n${visualVal}\n`;
+        content += `====================================================\n\n`;
+      });
+
+      const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${title.toLowerCase().replace(/\s+/g, '_')}_script.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    // Generar PDF mediante el cuadro de impresión del navegador
+    function printPDF() {
+      window.print();
+    }
+
+    // Cargar escenas iniciales de ejemplo
+    window.onload = function() {
+      addScene('¡Hola a todos! Hoy les queremos mostrar algo genial...', 'Toma rápida de apertura, texto animado en pantalla.');
+      addScene('Con esta nueva función podrás optimizar tu tiempo.', 'Demostración en pantalla del celular mostrando la app.');
+    };
+  </script>
+</body>
+</html>
