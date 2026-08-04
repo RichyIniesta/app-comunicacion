@@ -206,9 +206,207 @@
 </head>
 <body>
 
-  <header>
-    <h1>generador de plantillas</h1>
-  </header>
+  <!-- BARRA DE NAVEGACIÓN MODERNA -->
+<nav class="b-navbar">
+  <div class="b-nav-container">
+    <!-- Brand / Logo -->
+    <a href="index.html" class="b-brand">
+      <span class="b-brand-main">Bradesco</span>
+      <span class="b-brand-sub">Comunicación</span>
+    </a>
+
+    <!-- Hamburguesa Móvil -->
+    <button class="b-nav-toggle" id="bNavToggle" aria-label="Abrir menú">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <!-- Menú de Enlaces -->
+    <ul class="b-nav-menu" id="bNavMenu">
+      <li class="b-nav-item">
+        <a href="index.html" class="b-nav-link" id="nav-home">
+          <svg class="b-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M10 20v-6h4v6h5v-8h3L12 3L2 12h3v8z"/></svg>
+          Inicio
+        </a>
+      </li>
+      <li class="b-nav-item">
+        <a href="correos.html" class="b-nav-link" id="nav-correos">
+          <svg class="b-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5l-8-5V6l8 5l8-5v2z"/></svg>
+          Generador de Correos
+        </a>
+      </li>
+      <li class="b-nav-item">
+        <a href="script.html" class="b-nav-link" id="nav-script">
+          <svg class="b-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H9l2 4H8L6 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"/></svg>
+          Generador de Scripts
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ESTILOS Y LÓGICA DE LA NAVBAR -->
+<style>
+  :root {
+    --bradesco-red: #CC092F;
+    --bradesco-dark-red: #9B0522;
+    --text-dark: #333333;
+  }
+
+  .b-navbar {
+    background-color: var(--bradesco-red);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    position: relative;
+    z-index: 1000;
+  }
+
+  .b-nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* Marca / Logo */
+  .b-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: white;
+  }
+
+  .b-brand-main {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+
+  .b-brand-sub {
+    font-size: 13px;
+    opacity: 0.85;
+    padding-left: 8px;
+    border-left: 1px solid rgba(255, 255, 255, 0.4);
+  }
+
+  /* Menú de Enlaces */
+  .b-nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .b-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    color: rgba(255, 255, 255, 0.88);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+  }
+
+  .b-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .b-nav-link:hover {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+
+  /* Estado Activo */
+  .b-nav-link.active {
+    color: var(--bradesco-red);
+    background-color: white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+
+  /* Botón Hamburgesa (Móviles) */
+  .b-nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 26px;
+    height: 18px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .b-nav-toggle span {
+    width: 100%;
+    height: 2px;
+    background-color: white;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+
+  /* Responsivo */
+  @media (max-width: 768px) {
+    .b-nav-toggle {
+      display: flex;
+    }
+
+    .b-nav-menu {
+      position: absolute;
+      top: 60px;
+      left: 0;
+      right: 0;
+      background-color: var(--bradesco-red);
+      flex-direction: column;
+      padding: 15px 20px;
+      gap: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      display: none;
+    }
+
+    .b-nav-menu.open {
+      display: flex;
+    }
+
+    .b-nav-link {
+      padding: 12px 16px;
+      width: 100%;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 1. Detectar página actual y marcar enlace activo
+    const path = window.location.pathname.split('/').pop() || 'index.html';
+    
+    if (path === 'index.html' || path === '') {
+      document.getElementById('nav-home')?.classList.add('active');
+    } else if (path === 'correos.html') {
+      document.getElementById('nav-correos')?.classList.add('active');
+    } else if (path === 'script.html') {
+      document.getElementById('nav-script')?.classList.add('active');
+    }
+
+    // 2. Toggle menú hamburguesa en móviles
+    const toggleBtn = document.getElementById('bNavToggle');
+    const menu = document.getElementById('bNavMenu');
+
+    if (toggleBtn && menu) {
+      toggleBtn.addEventListener('click', function() {
+        menu.classList.toggle('open');
+      });
+    }
+  });
+</script>
 
   <div class="main-container">
     <div class="editor-panel">
