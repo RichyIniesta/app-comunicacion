@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bradesco | Generador de Plantillas</title>
+  <title>Bradesco | Generador Modular de Plantillas</title>
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -27,394 +27,142 @@
       overflow: hidden;
     }
 
-    header {
+    /* Navbar */
+    .b-navbar {
       background-color: var(--bradesco-red);
-      color: white;
-      padding: 15px 30px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+      position: relative;
+      z-index: 1000;
     }
-
-    header h1 { font-size: 20px; font-weight: 700; text-transform: lowercase; }
-    header h1::first-letter { text-transform: uppercase; }
-    header .subtitle { font-size: 13px; opacity: 0.9; }
-
-    .main-container {
+    .b-nav-container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 20px;
+      height: 60px;
       display: flex;
-      flex: 1;
-      height: calc(100vh - 60px);
-      overflow: hidden;
-    }
-
-    .editor-panel {
-      width: 45%;
-      background: var(--card-bg);
-      border-right: 1px solid var(--border-color);
-      overflow-y: auto;
-      padding: 25px;
-    }
-
-    .preview-panel {
-      width: 55%;
-      background: #EAEAEA;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .preview-toolbar {
-      background: white;
-      padding: 12px 25px;
-      border-bottom: 1px solid var(--border-color);
-      display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
     }
+    .b-brand { display: flex; align-items: center; text-decoration: none; color: white; }
+    .b-brand-main { font-size: 20px; font-weight: 700; }
+    .b-brand-sub { font-size: 13px; opacity: 0.85; padding-left: 8px; border-left: 1px solid rgba(255, 255, 255, 0.4); margin-left: 8px; }
+    .b-nav-menu { display: flex; list-style: none; gap: 8px; }
+    .b-nav-link {
+      display: flex; align-items: center; gap: 6px; padding: 8px 14px; color: rgba(255, 255, 255, 0.9);
+      text-decoration: none; font-size: 13px; font-weight: 600; border-radius: 6px; transition: all 0.2s;
+    }
+    .b-icon { width: 16px; height: 16px; }
+    .b-nav-link:hover { background-color: rgba(255, 255, 255, 0.15); color: white; }
+    .b-nav-link.active { color: var(--bradesco-red); background-color: white; }
 
-    .preview-toolbar h2 { font-size: 16px; color: var(--text-dark); }
+    /* Layout */
+    .main-container { display: flex; flex: 1; height: calc(100vh - 60px); overflow: hidden; }
+    .editor-panel { width: 48%; background: var(--card-bg); border-right: 1px solid var(--border-color); overflow-y: auto; padding: 25px; }
+    .preview-panel { width: 52%; background: #EAEAEA; display: flex; flex-direction: column; }
+    .preview-toolbar { background: white; padding: 12px 25px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+    .preview-toolbar h2 { font-size: 15px; font-weight: 700; color: var(--text-dark); }
     .preview-actions { display: flex; gap: 10px; }
 
-    .iframe-container {
-      flex: 1;
-      padding: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      overflow-y: auto;
-    }
+    .iframe-container { flex: 1; padding: 20px; display: flex; justify-content: center; align-items: flex-start; overflow-y: auto; }
+    iframe { width: 100%; max-width: 650px; height: 100%; min-height: 700px; border: none; background: white; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border-radius: 4px; }
 
-    iframe {
-      width: 100%;
-      max-width: 650px;
-      height: 100%;
-      min-height: 700px;
-      border: none;
-      background: white;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      border-radius: 4px;
-    }
-
+    /* Tarjetas y Bloques */
     .section-card {
-      background: white;
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 18px;
-      margin-bottom: 20px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      background: white; border: 1px solid var(--border-color); border-radius: 8px;
+      padding: 16px; margin-bottom: 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);
     }
+    .block-card { border-left: 4px solid var(--bradesco-red); }
+    .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .section-title { font-size: 14px; font-weight: 700; color: var(--bradesco-red); }
+    .block-controls { display: flex; gap: 6px; }
 
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 15px;
-    }
-
-    .section-title { font-size: 15px; font-weight: 700; color: var(--bradesco-red); }
-
-    .form-group { margin-bottom: 15px; }
+    .form-group { margin-bottom: 12px; }
     .form-group:last-child { margin-bottom: 0; }
+    label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 5px; color: #4A5568; }
 
-    label {
-      display: block;
-      font-size: 13px;
-      font-weight: 600;
-      margin-bottom: 6px;
-      color: #4A5568;
+    input[type="text"], input[type="url"], select {
+      width: 100%; padding: 8px 12px; border: 1px solid #CBD5E1; border-radius: 6px;
+      font-size: 13px; font-family: inherit; color: var(--text-dark);
     }
+    input:focus, select:focus { outline: none; border-color: var(--bradesco-red); box-shadow: 0 0 0 2px rgba(204,9,47,0.1); }
 
-    input[type="text"], input[type="url"], textarea {
-      width: 100%;
-      padding: 10px 12px;
-      border: 1px solid #CBD5E1;
-      border-radius: 6px;
-      font-size: 14px;
-      font-family: inherit;
-      color: var(--text-dark);
+    /* Rich Text Editor */
+    .wysiwyg-toolbar {
+      display: flex; flex-wrap: wrap; gap: 4px; background: #F8FAFC; border: 1px solid #CBD5E1;
+      border-bottom: none; border-radius: 6px 6px 0 0; padding: 6px 8px;
     }
+    .wysiwyg-btn {
+      background: white; border: 1px solid #CBD5E1; border-radius: 4px; padding: 4px 8px;
+      font-size: 12px; font-weight: bold; cursor: pointer; color: #475569;
+    }
+    .wysiwyg-btn:hover { background: #E2E8F0; color: #0F172A; }
+    .wysiwyg-editor {
+      min-height: 90px; padding: 10px 12px; border: 1px solid #CBD5E1; border-radius: 0 0 6px 6px;
+      font-size: 14px; line-height: 1.5; color: var(--text-dark); background: white; outline: none;
+    }
+    .wysiwyg-editor:focus { border-color: var(--bradesco-red); }
+    .wysiwyg-editor ul, .wysiwyg-editor ol { padding-left: 20px; }
 
-    input[type="text"]:focus, input[type="url"]:focus, textarea:focus {
-      outline: none;
-      border-color: var(--bradesco-red);
-      box-shadow: 0 0 0 3px rgba(204, 9, 47, 0.1);
+    /* Barra de Agregar Bloques */
+    .add-block-container {
+      background: #F8FAFC; border: 2px dashed #CBD5E1; border-radius: 8px; padding: 16px;
+      text-align: center; margin-bottom: 25px;
     }
+    .add-block-container p { font-size: 13px; font-weight: 600; color: #64748B; margin-bottom: 10px; }
+    .add-block-buttons { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
 
-    textarea { resize: vertical; min-height: 80px; }
+    .btn-block-action {
+      background: white; border: 1px solid #CBD5E1; color: #334155; font-size: 12px;
+      font-weight: 600; padding: 6px 12px; border-radius: 6px; cursor: pointer; transition: all 0.2s;
+    }
+    .btn-block-action:hover { border-color: var(--bradesco-red); color: var(--bradesco-red); background: #FFF5F5; }
 
-    /* Switch Component */
-    .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
-    .switch input { opacity: 0; width: 0; height: 0; }
-    .slider {
-      position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-      background-color: #CBD5E1; transition: .3s; border-radius: 24px;
-    }
-    .slider:before {
-      position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px;
-      background-color: white; transition: .3s; border-radius: 50%;
-    }
-    input:checked + .slider { background-color: var(--bradesco-red); }
-    input:checked + .slider:before { transform: translateX(20px); }
-
-    /* Radio Selector (Pills) para tipo de encabezado */
-    .header-selector {
-      display: flex;
-      gap: 10px;
-      margin-top: 5px;
-    }
-    .header-option {
-      flex: 1;
-    }
-    .header-option input[type="radio"] {
-      display: none;
-    }
+    /* Selector de Header */
+    .header-selector { display: flex; gap: 10px; }
+    .header-option { flex: 1; }
+    .header-option input[type="radio"] { display: none; }
     .header-option label {
-      display: block;
-      text-align: center;
-      padding: 10px 14px;
-      background: #F1F5F9;
-      border: 2px solid #CBD5E1;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 13px;
-      font-weight: 700;
-      color: #475569;
-      transition: all 0.2s ease;
-      margin-bottom: 0;
+      display: block; text-align: center; padding: 8px 12px; background: #F1F5F9; border: 2px solid #CBD5E1;
+      border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 700; color: #475569;
     }
     .header-option input[type="radio"]:checked + label {
-      background-color: #FFF5F5;
-      border-color: var(--bradesco-red);
-      color: var(--bradesco-red);
+      background-color: #FFF5F5; border-color: var(--bradesco-red); color: var(--bradesco-red);
     }
 
-    /* Buttons */
-    .btn {
-      padding: 10px 18px;
-      border: none;
-      border-radius: 6px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
+    /* Botones Generales */
+    .btn { padding: 9px 16px; border: none; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; }
     .btn-primary { background-color: var(--bradesco-red); color: white; }
     .btn-primary:hover { background-color: var(--bradesco-dark-red); }
     .btn-secondary { background-color: #E2E8F0; color: #334155; }
     .btn-secondary:hover { background-color: #CBD5E1; }
-
-    .collapsible-content { display: block; }
-    .collapsible-content.hidden { display: none; }
+    .btn-mini { padding: 3px 7px; font-size: 11px; border: 1px solid #CBD5E1; background: white; border-radius: 4px; cursor: pointer; }
+    .btn-mini-del { color: #DC2626; border-color: #FCA5A5; background: #FEF2F2; }
+    .btn-mini-del:hover { background: #FEE2E2; }
   </style>
 </head>
 <body>
 
-  <!-- BARRA DE NAVEGACIÓN MODERNA -->
-<nav class="b-navbar">
-  <div class="b-nav-container">
-    <!-- Brand / Logo -->
-    <a href="index.html" class="b-brand">
-      <img src="Bradesco_H_White_RGB.png" alt="bradesco" height="50">
-    </a>
-
-    <!-- Hamburguesa Móvil -->
-    <button class="b-nav-toggle" id="bNavToggle" aria-label="Abrir menú">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
-
-    <!-- Menú de Enlaces -->
-    <ul class="b-nav-menu" id="bNavMenu">
-      <li class="b-nav-item">
-        <a href="index.html" class="b-nav-link" id="nav-home">
-          <svg class="b-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M10 20v-6h4v6h5v-8h3L12 3L2 12h3v8z"/></svg>
-          Inicio
-        </a>
-      </li>
-      <li class="b-nav-item">
-        <a href="correos.html" class="b-nav-link" id="nav-correos">
-          <svg class="b-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5l-8-5V6l8 5l8-5v2z"/></svg>
-          Generador de Correos
-        </a>
-      </li>
-      <li class="b-nav-item">
-        <a href="script.html" class="b-nav-link" id="nav-script">
-          <svg class="b-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H9l2 4H8L6 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"/></svg>
-          Generador de Scripts
-        </a>
-      </li>
-    </ul>
-  </div>
-</nav>
-
-<!-- ESTILOS Y LÓGICA DE LA NAVBAR -->
-<style>
-  :root {
-    --bradesco-red: #CC092F;
-    --bradesco-dark-red: #9B0522;
-    --text-dark: #333333;
-  }
-
-  .b-navbar {
-    background-color: var(--bradesco-red);
-    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-    position: relative;
-    z-index: 1000;
-  }
-
-  .b-nav-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  /* Marca / Logo */
-  .b-brand {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    color: white;
-  }
-
-  .b-brand-main {
-    font-size: 20px;
-    font-weight: 700;
-    letter-spacing: -0.5px;
-  }
-
-  .b-brand-sub {
-    font-size: 13px;
-    opacity: 0.85;
-    padding-left: 8px;
-    border-left: 1px solid rgba(255, 255, 255, 0.4);
-  }
-
-  /* Menú de Enlaces */
-  .b-nav-menu {
-    display: flex;
-    list-style: none;
-    gap: 8px;
-    margin: 0;
-    padding: 0;
-  }
-
-  .b-nav-link {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 16px;
-    color: rgba(255, 255, 255, 0.88);
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 600;
-    border-radius: 6px;
-    transition: all 0.2s ease;
-  }
-
-  .b-icon {
-    width: 18px;
-    height: 18px;
-  }
-
-  .b-nav-link:hover {
-    color: white;
-    background-color: rgba(255, 255, 255, 0.15);
-  }
-
-  /* Estado Activo */
-  .b-nav-link.active {
-    color: var(--bradesco-red);
-    background-color: white;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  }
-
-  /* Botón Hamburgesa (Móviles) */
-  .b-nav-toggle {
-    display: none;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 26px;
-    height: 18px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-  }
-
-  .b-nav-toggle span {
-    width: 100%;
-    height: 2px;
-    background-color: white;
-    border-radius: 2px;
-    transition: all 0.3s ease;
-  }
-
-  /* Responsivo */
-  @media (max-width: 768px) {
-    .b-nav-toggle {
-      display: flex;
-    }
-
-    .b-nav-menu {
-      position: absolute;
-      top: 60px;
-      left: 0;
-      right: 0;
-      background-color: var(--bradesco-red);
-      flex-direction: column;
-      padding: 15px 20px;
-      gap: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-      display: none;
-    }
-
-    .b-nav-menu.open {
-      display: flex;
-    }
-
-    .b-nav-link {
-      padding: 12px 16px;
-      width: 100%;
-    }
-  }
-</style>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    // 1. Detectar página actual y marcar enlace activo
-    const path = window.location.pathname.split('/').pop() || 'index.html';
-    
-    if (path === 'index.html' || path === '') {
-      document.getElementById('nav-home')?.classList.add('active');
-    } else if (path === 'correos.html') {
-      document.getElementById('nav-correos')?.classList.add('active');
-    } else if (path === 'script.html') {
-      document.getElementById('nav-script')?.classList.add('active');
-    }
-
-    // 2. Toggle menú hamburguesa en móviles
-    const toggleBtn = document.getElementById('bNavToggle');
-    const menu = document.getElementById('bNavMenu');
-
-    if (toggleBtn && menu) {
-      toggleBtn.addEventListener('click', function() {
-        menu.classList.toggle('open');
-      });
-    }
-  });
-</script>
+  <!-- NAVBAR -->
+  <nav class="b-navbar">
+    <div class="b-nav-container">
+      <a href="index.html" class="b-brand">
+        <span class="b-brand-main">Bradesco</span>
+        <span class="b-brand-sub">Comunicación</span>
+      </a>
+      <ul class="b-nav-menu">
+        <li><a href="index.html" class="b-nav-link"><svg class="b-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M10 20v-6h4v6h5v-8h3L12 3L2 12h3v8z"/></svg>Inicio</a></li>
+        <li><a href="correos.html" class="b-nav-link active"><svg class="b-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5l-8-5V6l8 5l8-5v2z"/></svg>Plantillas</a></li>
+        <li><a href="script.html" class="b-nav-link"><svg class="b-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H9l2 4H8L6 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"/></svg>Scripts</a></li>
+      </ul>
+    </div>
+  </nav>
 
   <div class="main-container">
     <div class="editor-panel">
       
-      <!-- TIPO DE ENCABEZADO (HEADER) -->
+      <!-- 1. HEADER (FIJO) -->
       <div class="section-card">
-        <div class="section-header">
-          <span class="section-title">Tipo de Encabezado Principal</span>
-        </div>
+        <div class="section-header"><span class="section-title">Encabezado de Marca</span></div>
         <div class="header-selector">
           <div class="header-option">
             <input type="radio" id="type-informa" name="headerType" value="informa" checked onchange="updatePreview()">
@@ -427,102 +175,25 @@
         </div>
       </div>
 
-      <!-- HERO -->
+      <!-- 2. TITULO PRINCIPAL (FIJO POR DEFECTO) -->
       <div class="section-card">
-        <div class="section-header">
-          <span class="section-title">Incluir Imagen</span>
-          <label class="switch">
-            <input type="checkbox" id="toggle-hero" onchange="updatePreview()">
-            <span class="slider"></span>
-          </label>
-        </div>
-        <div id="content-hero" class="collapsible-content hidden">
-          <div class="form-group">
-            <label for="hero-url">URL de la Imagen Alojada en SharePoint</label>
-            <input type="url" id="hero-url" placeholder="https://ejemplo.com/imagen.jpg" oninput="updatePreview()">
-          </div>
-        </div>
-      </div>
-
-      <!-- TITULO Y SUBTITULO -->
-      <div class="section-card">
-        <div class="section-header"><span class="section-title">Encabezado y Subtítulo</span></div>
+        <div class="section-header"><span class="section-title">Título del Comunicado</span></div>
         <div class="form-group">
-          <label for="titulo">Título Principal</label>
-          <input type="text" id="titulo" value="Aviso Importante Bradesco" oninput="updatePreview()">
-        </div>
-        <div class="form-group">
-          <label for="subtitulo">Subtítulo / Introducción</label>
-          <textarea id="subtitulo" rows="2" oninput="updatePreview()">Puedes editar este campo o dejarlo Vacio dependiendo de la información</textarea>
+          <input type="text" id="main-title" value="Aviso Importante Bradesco" oninput="updatePreview()" placeholder="Escribe el título aquí...">
         </div>
       </div>
 
-      <!-- BLOQUE DESTACADO -->
-      <div class="section-card">
-        <div class="section-header">
-          <span class="section-title">Bloque Destacado</span>
-          <label class="switch">
-            <input type="checkbox" id="toggle-destacado" checked onchange="updatePreview()">
-            <span class="slider"></span>
-          </label>
-        </div>
-        <div id="content-destacado" class="collapsible-content">
-          <div class="form-group">
-            <label for="titulo-destacado">Título del Bloque</label>
-            <input type="text" id="titulo-destacado" value="¡Atención Especial!" oninput="updatePreview()">
-          </div>
-          <div class="form-group">
-            <label for="contenido-destacado">Mensaje Destacado</label>
-            <textarea id="contenido-destacado" rows="3" oninput="updatePreview()">Recuerde que este trámite no tiene costo adicional y puede realizarse directamente desde su portal.</textarea>
-          </div>
-        </div>
-      </div>
+      <!-- CONTENEDOR DE BLOQUES DINÁMICOS -->
+      <div id="blocks-container"></div>
 
-      <!-- CONTENIDO PRINCIPAL -->
-      <div class="section-card">
-        <div class="section-header"><span class="section-title">Cuerpo del Mensaje</span></div>
-        <div class="form-group">
-          <label for="contenido-principal">Contenido Principal</label>
-          <textarea id="contenido-principal" rows="4" oninput="updatePreview()">Estamos comprometidos con brindarle el mejor servicio. 
-Si requiere asistencia personalizada o resolver dudas respecto a este comunicado, nuestro equipo está a su disposición.</textarea>
-        </div>
-      </div>
-
-      <!-- IMAGEN SECUNDARIA -->
-      <div class="section-card">
-        <div class="section-header">
-          <span class="section-title">Imagen Adicional</span>
-          <label class="switch">
-            <input type="checkbox" id="toggle-secundaria" onchange="updatePreview()">
-            <span class="slider"></span>
-          </label>
-        </div>
-        <div id="content-secundaria" class="collapsible-content hidden">
-          <div class="form-group">
-            <label for="secundaria-url">URL de la Imagen Secundaria</label>
-            <input type="url" id="secundaria-url" placeholder="https://ejemplo.com/banner.jpg" oninput="updatePreview()">
-          </div>
-        </div>
-      </div>
-
-      <!-- BOTON -->
-      <div class="section-card">
-        <div class="section-header">
-          <span class="section-title">Botón Call-to-Action</span>
-          <label class="switch">
-            <input type="checkbox" id="toggle-boton" checked onchange="updatePreview()">
-            <span class="slider"></span>
-          </label>
-        </div>
-        <div id="content-boton" class="collapsible-content">
-          <div class="form-group">
-            <label for="texto-boton">Texto del Botón</label>
-            <input type="text" id="texto-boton" value="MÁS INFORMACIÓN" oninput="updatePreview()">
-          </div>
-          <div class="form-group">
-            <label for="url-boton">Enlace (URL) del Botón</label>
-            <input type="url" id="url-boton" value="https://www.bradesco.com.mx" oninput="updatePreview()">
-          </div>
+      <!-- BARRA PARA AGREGAR NUEVOS BLOQUES -->
+      <div class="add-block-container">
+        <p>+ Agregar un nuevo bloque de contenido:</p>
+        <div class="add-block-buttons">
+          <button class="btn-block-action" onclick="addBlock('text')">📝 Cuerpo de Texto</button>
+          <button class="btn-block-action" onclick="addBlock('destacado')">📌 Bloque Destacado</button>
+          <button class="btn-block-action" onclick="addBlock('image')">🖼️ Imagen / Banner</button>
+          <button class="btn-block-action" onclick="addBlock('button')">🔘 Botón (Enlace)</button>
         </div>
       </div>
 
@@ -545,108 +216,183 @@ Si requiere asistencia personalizada o resolver dudas respecto a este comunicado
 
   <script>
     let rawTemplate = "";
+    let blockCount = 0;
 
-    // URLs directas de las imágenes
     const HEADER_IMAGES = {
       informa: "https://github.com/RichyIniesta/app-comunicacion/blob/main/bradesco-informa-plantilla-1-1.png?raw=true",
       talento: "https://github.com/RichyIniesta/app-comunicacion/blob/2c748b4cb507990cbb4631dc37b53963b1576bd2/bradesco-informa-plantilla-1-2.png?raw=true"
     };
 
-    // Carga inicial del archivo externo de plantilla
     async function loadTemplate() {
       try {
         const response = await fetch('plantilla.html');
-        if (!response.ok) throw new Error("No se pudo cargar la plantilla externa.");
+        if (!response.ok) throw new Error();
         rawTemplate = await response.text();
         updatePreview();
-      } catch (error) {
-        console.error("Error al cargar plantilla:", error);
-        alert("Atención: Para cargar archivos externos mediante fetch(), debes ejecutar este proyecto desde un servidor local (ej. Live Server en VS Code o python -m http.server).");
+      } catch (err) {
+        console.error(err);
+        alert("Recuerda abrir la app a través de un servidor web local (Live Server o GitHub Pages) para cargar la plantilla externa.");
       }
     }
 
+    // AGREGAR BLOQUES DINÁMICOS
+    function addBlock(type, initialData = {}) {
+      blockCount++;
+      const id = `block-${blockCount}`;
+      const container = document.getElementById('blocks-container');
+      const card = document.createElement('div');
+      card.className = 'section-card block-card';
+      card.id = id;
+      card.dataset.type = type;
+
+      let typeTitle = "";
+      let fieldsHTML = "";
+
+      if (type === 'text') {
+        typeTitle = "Cuerpo de Texto";
+        fieldsHTML = `
+          <div class="form-group">
+            <div class="wysiwyg-toolbar">
+              <button type="button" class="wysiwyg-btn" onclick="formatDoc('${id}', 'bold')"><b>B</b></button>
+              <button type="button" class="wysiwyg-btn" onclick="formatDoc('${id}', 'italic')"><i>I</i></button>
+              <button type="button" class="wysiwyg-btn" onclick="formatDoc('${id}', 'justifyLeft')">Izq</button>
+              <button type="button" class="wysiwyg-btn" onclick="formatDoc('${id}', 'justifyCenter')">Cent</button>
+              <button type="button" class="wysiwyg-btn" onclick="formatDoc('${id}', 'justifyRight')">Der</button>
+              <button type="button" class="wysiwyg-btn" onclick="formatDoc('${id}', 'justifyFull')">Just</button>
+              <button type="button" class="wysiwyg-btn" onclick="formatDoc('${id}', 'insertUnorderedList')">• Lista</button>
+              <button type="button" class="wysiwyg-btn" onclick="formatDoc('${id}', 'insertOrderedList')">1. Lista</button>
+            </div>
+            <div id="${id}-editor" class="wysiwyg-editor" contenteditable="true" oninput="updatePreview()">${initialData.text || 'Escribe tu párrafo aquí con el formato deseado...'}</div>
+          </div>
+        `;
+      } else if (type === 'destacado') {
+        typeTitle = "Bloque Destacado";
+        fieldsHTML = `
+          <div class="form-group">
+            <label>Título Destacado:</label>
+            <input type="text" class="dest-title" value="${initialData.title || '¡Atención Especial!'}" oninput="updatePreview()">
+          </div>
+          <div class="form-group">
+            <label>Contenido:</label>
+            <input type="text" class="dest-content" value="${initialData.content || 'Mensaje clave resaltado en el cuadro...'}" oninput="updatePreview()">
+          </div>
+        `;
+      } else if (type === 'image') {
+        typeTitle = "Imagen / Banner";
+        fieldsHTML = `
+          <div class="form-group">
+            <label>URL de la Imagen:</label>
+            <input type="url" class="img-url" placeholder="https://ejemplo.com/banner.jpg" value="${initialData.url || ''}" oninput="updatePreview()">
+          </div>
+        `;
+      } else if (type === 'button') {
+        typeTitle = "Botón Call-to-Action";
+        fieldsHTML = `
+          <div class="form-group">
+            <label>Texto del Botón:</label>
+            <input type="text" class="btn-text" value="${initialData.text || 'MÁS INFORMACIÓN'}" oninput="updatePreview()">
+          </div>
+          <div class="form-group">
+            <label>URL del Enlace:</label>
+            <input type="url" class="btn-url" value="${initialData.url || 'https://www.bradesco.com.mx'}" oninput="updatePreview()">
+          </div>
+        `;
+      }
+
+      card.innerHTML = `
+        <div class="section-header">
+          <span class="section-title">${typeTitle}</span>
+          <div class="block-controls">
+            <button class="btn-mini" onclick="moveBlock('${id}', -1)">↑</button>
+            <button class="btn-mini" onclick="moveBlock('${id}', 1)">↓</button>
+            <button class="btn-mini btn-mini-del" onclick="deleteBlock('${id}')">✕</button>
+          </div>
+        </div>
+        ${fieldsHTML}
+      `;
+
+      container.appendChild(card);
+      updatePreview();
+    }
+
+    // Funciones de formato Rich Text
+    function formatDoc(blockId, cmd, val = null) {
+      const editor = document.getElementById(`${blockId}-editor`);
+      editor.focus();
+      document.execCommand(cmd, false, val);
+      updatePreview();
+    }
+
+    function deleteBlock(id) {
+      document.getElementById(id)?.remove();
+      updatePreview();
+    }
+
+    function moveBlock(id, direction) {
+      const card = document.getElementById(id);
+      if (!card) return;
+      if (direction === -1 && card.previousElementSibling) {
+        card.parentNode.insertBefore(card, card.previousElementSibling);
+      } else if (direction === 1 && card.nextElementSibling) {
+        card.parentNode.insertBefore(card.nextElementSibling, card);
+      }
+      updatePreview();
+    }
+
+    // ENSAMBLAR EL HTML
     function buildHTML() {
       if (!rawTemplate) return "";
-
       let output = rawTemplate;
-      const formatText = str => str.replace(/\n/g, '<br>');
 
-      // 0. Encabezado principal (Bradesco Informa vs Talento)
-      const selectedHeaderType = document.querySelector('input[name="headerType"]:checked').value;
-      const headerImageUrl = HEADER_IMAGES[selectedHeaderType] || HEADER_IMAGES.informa;
-      output = output.replace('{{HEADER_IMAGE}}', headerImageUrl);
+      // 1. Header
+      const headerType = document.querySelector('input[name="headerType"]:checked').value;
+      output = output.replace('{{HEADER_IMAGE}}', HEADER_IMAGES[headerType]);
 
-      // 1. Hero
-      const showHero = document.getElementById('toggle-hero').checked;
-      const heroUrl = document.getElementById('hero-url').value;
-      if (showHero && heroUrl.trim() !== '') {
-        const heroBlock = `<!-- ================================================= -->\n<!-- 02_HERO -->\n<!-- ================================================= -->\n<tr>\n<td align="center" width="600">\n<img src="${heroUrl}" alt="" width="600" style="display: block; width: 100%; max-width: 600px; height: auto;">\n</td>\n</tr>`;
-        output = output.replace('{{SECTION_HERO}}', heroBlock);
-      } else {
-        output = output.replace('{{SECTION_HERO}}', '');
-      }
+      // 2. Título
+      const titleVal = document.getElementById('main-title').value.replace(/\n/g, '<br>');
+      output = output.replace('{{TITULO}}', titleVal);
 
-      // 2. Títulos
-      output = output.replace('{{TITULO}}', formatText(document.getElementById('titulo').value));
-      output = output.replace('{{SUBTITULO}}', formatText(document.getElementById('subtitulo').value));
+      // 3. Renderizar cada bloque dinámico en orden
+      let blocksHTML = "";
+      const blocks = document.querySelectorAll('#blocks-container .block-card');
 
-      // 3. Bloque Destacado
-      const showDestacado = document.getElementById('toggle-destacado').checked;
-      if (showDestacado) {
-        const titDest = formatText(document.getElementById('titulo-destacado').value);
-        const contDest = formatText(document.getElementById('contenido-destacado').value);
-        const destBlock = `<!-- ================================================= -->\n<!-- 05_BLOQUE_DESTACADO -->\n<!-- ================================================= -->\n<tr>\n<td style="padding: 0 45px 30px 45px;" align="center">\n<table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background-color: #F8F8F8; border-top: 5px solid #CC092F; width: 100%;">\n<tr>\n<td style="padding: 25px; font-family: Arial, Helvetica, sans-serif; text-align: center;" align="center">\n<strong style="color: #CC092F; font-size: 18px; display: block; margin-bottom: 15px;">${titDest}</strong>\n<div style="font-size: 16px; line-height: 28px; color: #6e6e6e; font-family: Arial, Helvetica, sans-serif; text-align: center;">${contDest}</div>\n</td>\n</tr>\n</table>\n</td>\n</tr>`;
-        output = output.replace('{{SECTION_DESTACADO}}', destBlock);
-      } else {
-        output = output.replace('{{SECTION_DESTACADO}}', '');
-      }
+      blocks.forEach(block => {
+        const type = block.dataset.type;
 
-      // 4. Cuerpo Principal
-      output = output.replace('{{CONTENIDO_PRINCIPAL}}', formatText(document.getElementById('contenido-principal').value));
+        if (type === 'text') {
+          const editor = block.querySelector('.wysiwyg-editor');
+          const cleanHTML = editor.innerHTML;
+          blocksHTML += `\n<!-- BLOQUE TEXTO -->\n<tr>\n<td style="padding: 5px 45px 25px 45px; font-family: Arial, Helvetica, sans-serif; font-size: 16px; line-height: 28px; color: #6e6e6e;">\n${cleanHTML}\n</td>\n</tr>\n`;
+        } 
+        else if (type === 'destacado') {
+          const tit = block.querySelector('.dest-title').value;
+          const cont = block.querySelector('.dest-content').value;
+          blocksHTML += `\n<!-- BLOQUE DESTACADO -->\n<tr>\n<td style="padding: 10px 45px 25px 45px;" align="center">\n<table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background-color: #F8F8F8; border-top: 5px solid #CC092F; width: 100%;">\n<tr>\n<td style="padding: 25px; font-family: Arial, Helvetica, sans-serif; text-align: center;" align="center">\n<strong style="color: #CC092F; font-size: 18px; display: block; margin-bottom: 12px;">${tit}</strong>\n<div style="font-size: 16px; line-height: 28px; color: #6e6e6e; font-family: Arial, Helvetica, sans-serif;">${cont}</div>\n</td>\n</tr>\n</table>\n</td>\n</tr>\n`;
+        } 
+        else if (type === 'image') {
+          const url = block.querySelector('.img-url').value;
+          if (url.trim() !== '') {
+            blocksHTML += `\n<!-- BLOQUE IMAGEN -->\n<tr>\n<td align="center" width="600" style="padding: 5px 45px 25px 45px;">\n<img src="${url}" alt="" width="510" style="display: block; width: 100%; max-width: 510px; height: auto; margin: 0 auto;">\n</td>\n</tr>\n`;
+          }
+        } 
+        else if (type === 'button') {
+          const text = block.querySelector('.btn-text').value;
+          const url = block.querySelector('.btn-url').value;
+          blocksHTML += `\n<!-- BLOQUE BOTON -->\n<tr>\n<td style="padding: 10px 45px 30px 45px;" align="center">\n<table border="0" cellspacing="0" cellpadding="0" role="presentation" align="center">\n<tr>\n<td align="center" bgcolor="#CC092F" style="border-radius: 4px; background-color: #CC092F;">\n<a href="${url}" target="_blank" style="font-size: 16px; font-family: Arial, Helvetica, sans-serif; color: #FFFFFF; text-decoration: none; border-radius: 4px; padding: 14px 30px; border: 1px solid #CC092F; display: inline-block; font-weight: bold; min-width: 200px;">${text}</a>\n</td>\n</tr>\n</table>\n</td>\n</tr>\n`;
+        }
+      });
 
-      // 5. Imagen Secundaria
-      const showSecundario = document.getElementById('toggle-secundaria').checked;
-      const secUrl = document.getElementById('secundaria-url').value;
-      if (showSecundario && secUrl.trim() !== '') {
-        const secBlock = `<!-- ================================================= -->\n<!-- 07_IMAGEN_SECUNDARIA -->\n<!-- ================================================= -->\n<tr>\n<td style="padding: 0 45px 30px 45px;" align="center">\n<img src="${secUrl}" alt="" width="510" style="display: block; width: 100%; max-width: 510px; height: auto; margin: 0 auto;">\n</td>\n</tr>`;
-        output = output.replace('{{SECTION_SECUNDARIA}}', secBlock);
-      } else {
-        output = output.replace('{{SECTION_SECUNDARIA}}', '');
-      }
-
-      // 6. Botón
-      const showBoton = document.getElementById('toggle-boton').checked;
-      if (showBoton) {
-        const textoBoton = document.getElementById('texto-boton').value;
-        const urlBoton = document.getElementById('url-boton').value;
-        const btnBlock = `<!-- ================================================= -->\n<!-- 08_BOTON -->\n<!-- ================================================= -->\n<tr>\n<td style="padding: 10px 45px 40px 45px;" align="center">\n<table border="0" cellspacing="0" cellpadding="0" role="presentation" align="center">\n<tr>\n<td align="center" bgcolor="#CC092F" style="border-radius: 4px; background-color: #CC092F;">\n<a href="${urlBoton}" target="_blank" style="font-size: 16px; font-family: Arial, Helvetica, sans-serif; color: #FFFFFF; text-decoration: none; border-radius: 4px; padding: 14px 30px; border: 1px solid #CC092F; display: inline-block; font-weight: bold;">${textoBoton}</a>\n</td>\n</tr>\n</table>\n</td>\n</tr>`;
-        output = output.replace('{{SECTION_BOTON}}', btnBlock);
-      } else {
-        output = output.replace('{{SECTION_BOTON}}', '');
-      }
-
+      output = output.replace('{{BLOQUES_CONTENIDO}}', blocksHTML);
       return output;
     }
 
     function updatePreview() {
-      toggleSection('toggle-hero', 'content-hero');
-      toggleSection('toggle-destacado', 'content-destacado');
-      toggleSection('toggle-secundaria', 'content-secundaria');
-      toggleSection('toggle-boton', 'content-boton');
-
       const html = buildHTML();
       const iframe = document.getElementById('preview-frame');
       const doc = iframe.contentDocument || iframe.contentWindow.document;
       doc.open();
       doc.write(html);
       doc.close();
-    }
-
-    function toggleSection(toggleId, contentId) {
-      const isChecked = document.getElementById(toggleId).checked;
-      const content = document.getElementById(contentId);
-      if (isChecked) content.classList.remove('hidden');
-      else content.classList.add('hidden');
     }
 
     function copyHTML() {
@@ -668,7 +414,11 @@ Si requiere asistencia personalizada o resolver dudas respecto a este comunicado
       URL.revokeObjectURL(url);
     }
 
-    window.onload = loadTemplate;
+    window.onload = function() {
+      loadTemplate();
+      // Bloque de texto inicial por cortesía (opcional)
+      addBlock('text', { text: 'Estimado equipo, compartimos el siguiente comunicado oficial respecto a las actividades del área.' });
+    };
   </script>
 </body>
 </html>
