@@ -141,20 +141,45 @@
   </style>
 </head>
 <body>
-
-  <!-- NAVBAR -->
-  <nav class="b-navbar">
-    <div class="b-nav-container">
+  
+<!-- BARRA DE NAVEGACIÓN MODERNA -->
+<nav class="b-navbar">
+  <div class="b-nav-container">
+    <!-- Brand / Logo -->
     <a href="index.html" class="b-brand">
       <img src="Bradesco_H_White_RGB.png" alt="bradesco" height="50">
     </a>
-      <ul class="b-nav-menu">
-        <li><a href="index.html" class="b-nav-link"><svg class="b-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M10 20v-6h4v6h5v-8h3L12 3L2 12h3v8z"/></svg>Inicio</a></li>
-        <li><a href="correos.html" class="b-nav-link active"><svg class="b-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5l-8-5V6l8 5l8-5v2z"/></svg>Plantillas</a></li>
-        <li><a href="script.html" class="b-nav-link"><svg class="b-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H9l2 4H8L6 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"/></svg>Scripts</a></li>
-      </ul>
-    </div>
-  </nav>
+
+    <!-- Hamburguesa Móvil -->
+    <button class="b-nav-toggle" id="bNavToggle" aria-label="Abrir menú">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <!-- Menú de Enlaces -->
+    <ul class="b-nav-menu" id="bNavMenu">
+      <li class="b-nav-item">
+        <a href="index.html" class="b-nav-link" id="nav-home">
+          <svg class="b-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M10 20v-6h4v6h5v-8h3L12 3L2 12h3v8z"/></svg>
+          Inicio
+        </a>
+      </li>
+      <li class="b-nav-item">
+        <a href="correos.html" class="b-nav-link" id="nav-correos">
+          <svg class="b-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5l-8-5V6l8 5l8-5v2z"/></svg>
+          Generador de Correos
+        </a>
+      </li>
+      <li class="b-nav-item">
+        <a href="script.html" class="b-nav-link" id="nav-script">
+          <svg class="b-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H9l2 4H8L6 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"/></svg>
+          Generador de Scripts
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
 
   <div class="main-container">
     <div class="editor-panel">
