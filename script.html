@@ -27,17 +27,102 @@
       overflow: hidden;
     }
 
-    header {
+    /* BARRA DE NAVEGACIÓN */
+    .b-navbar {
       background-color: var(--brand-red);
-      color: white;
-      padding: 15px 30px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-      z-index: 10;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+      position: relative;
+      z-index: 1000;
     }
 
-    header h1 { font-size: 20px; font-weight: 700; }
-    header .subtitle { font-size: 13px; opacity: 0.9; }
+    .b-nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
 
+    .b-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: white;
+    }
+
+    .b-brand img {
+      height: 40px;
+      width: auto;
+      display: block;
+    }
+
+    .b-nav-menu {
+      display: flex;
+      list-style: none;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+    }
+
+    .b-nav-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      color: rgba(255, 255, 255, 0.88);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .b-icon { width: 18px; height: 18px; }
+    .b-nav-link:hover { color: white; background-color: rgba(255, 255, 255, 0.15); }
+    .b-nav-link.active { color: var(--brand-red); background-color: white; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+
+    .b-nav-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 26px;
+      height: 18px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .b-nav-toggle span {
+      width: 100%;
+      height: 2px;
+      background-color: white;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    @media (max-width: 768px) {
+      .b-nav-toggle { display: flex; }
+      .b-nav-menu {
+        position: absolute;
+        top: 60px;
+        left: 0;
+        right: 0;
+        background-color: var(--brand-red);
+        flex-direction: column;
+        padding: 15px 20px;
+        gap: 10px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        display: none;
+      }
+      .b-nav-menu.open { display: flex; }
+      .b-nav-link { padding: 12px 16px; width: 100%; }
+    }
+
+    /* CONTENEDOR PRINCIPAL */
     .main-container {
       display: flex;
       flex: 1;
@@ -45,7 +130,6 @@
       overflow: hidden;
     }
 
-    /* Panel Izquierdo: Editor de Escenas */
     .editor-panel {
       width: 50%;
       background: var(--card-bg);
@@ -54,7 +138,6 @@
       padding: 25px;
     }
 
-    /* Panel Derecho: Vista Previa */
     .preview-panel {
       width: 50%;
       background: #EAEAEA;
@@ -91,10 +174,35 @@
     .script-paper h2 {
       text-align: center;
       color: var(--brand-red);
-      margin-bottom: 20px;
+      margin-bottom: 15px;
       font-size: 22px;
       border-bottom: 2px solid var(--brand-red);
       padding-bottom: 10px;
+    }
+
+    /* Ficha Técnica de Grabación en Vista Previa */
+    .info-box {
+      background: #F8FAFC;
+      border: 1px solid #CBD5E1;
+      border-radius: 6px;
+      padding: 16px;
+      margin-bottom: 25px;
+      font-size: 13px;
+    }
+
+    .info-box-row {
+      margin-bottom: 10px;
+    }
+
+    .info-box-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .info-box-label {
+      font-weight: 700;
+      color: var(--brand-red);
+      display: inline-block;
+      min-width: 140px;
     }
 
     .script-table {
@@ -117,6 +225,7 @@
       font-weight: 700;
     }
 
+    /* TARJETAS */
     .scene-card {
       background: white;
       border: 1px solid var(--border-color);
@@ -127,14 +236,22 @@
       position: relative;
     }
 
+    .section-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--brand-red);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
     .scene-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 15px;
     }
-
-    .scene-title { font-size: 15px; font-weight: 700; color: var(--brand-red); }
 
     .form-group { margin-bottom: 12px; }
     .form-group:last-child { margin-bottom: 0; }
@@ -147,7 +264,7 @@
       color: #4A5568;
     }
 
-    input[type="text"], textarea {
+    input[type="text"], input[type="date"], input[type="time"], textarea {
       width: 100%;
       padding: 8px 10px;
       border: 1px solid #CBD5E1;
@@ -159,9 +276,21 @@
 
     textarea { resize: vertical; min-height: 60px; }
 
-    /* Botones */
+    /* Estilos para filas dinámicas de personas y horarios */
+    .dynamic-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+      align-items: center;
+    }
+
+    .dynamic-row input {
+      flex: 1;
+    }
+
+    /* BOTONES */
     .btn {
-      padding: 10px 18px;
+      padding: 9px 16px;
       border: none;
       border-radius: 6px;
       font-size: 13px;
@@ -177,19 +306,28 @@
       background-color: #FEE2E2;
       color: #DC2626;
       border: none;
-      padding: 4px 10px;
+      padding: 6px 10px;
       border-radius: 4px;
       font-size: 12px;
       cursor: pointer;
     }
     .btn-delete:hover { background-color: #FCA5A5; }
+    .btn-subtle {
+      font-size: 12px;
+      padding: 5px 10px;
+      background: #F1F5F9;
+      border: 1px solid #CBD5E1;
+      color: #475569;
+      margin-top: 5px;
+    }
+    .btn-subtle:hover { background: #E2E8F0; color: var(--brand-red); }
 
     .add-scene-container {
       margin-top: 10px;
       margin-bottom: 30px;
     }
 
-    /* Estilos para impresión / PDF */
+    /* IMPRESIÓN / PDF */
     @media print {
       body * { visibility: hidden; }
       .script-paper, .script-paper * { visibility: visible; }
@@ -205,221 +343,65 @@
 </head>
 <body>
 
-  <!-- BARRA DE NAVEGACIÓN MODERNA -->
-<nav class="b-navbar">
-  <div class="b-nav-container">
-    <!-- Brand / Logo -->
-    <a href="index.html" class="b-brand">
-      <img src="Bradesco_H_White_RGB.png" alt="bradesco" height="50">
-    </a>
+  <!-- BARRA DE NAVEGACIÓN -->
+  <nav class="b-navbar">
+    <div class="b-nav-container">
+      <a href="index.html" class="b-brand">
+        <img src="Bradesco_H_White_RGB.png" alt="bradesco">
+      </a>
 
-    <!-- Hamburguesa Móvil -->
-    <button class="b-nav-toggle" id="bNavToggle" aria-label="Abrir menú">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
+      <button class="b-nav-toggle" id="bNavToggle" aria-label="Abrir menú">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
 
-    <!-- Menú de Enlaces -->
-    <ul class="b-nav-menu" id="bNavMenu">
-      <li class="b-nav-item">
-        <a href="index.html" class="b-nav-link" id="nav-home">
-          <svg class="b-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M10 20v-6h4v6h5v-8h3L12 3L2 12h3v8z"/></svg>
-          Inicio
-        </a>
-      </li>
-      <li class="b-nav-item">
-        <a href="correos.html" class="b-nav-link" id="nav-correos">
-          <svg class="b-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5l-8-5V6l8 5l8-5v2z"/></svg>
-          Generador de Correos
-        </a>
-      </li>
-      <li class="b-nav-item">
-        <a href="script.html" class="b-nav-link" id="nav-script">
-          <svg class="b-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H9l2 4H8L6 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"/></svg>
-          Generador de Scripts
-        </a>
-      </li>
-    </ul>
-  </div>
-</nav>
-
-<!-- ESTILOS Y LÓGICA DE LA NAVBAR -->
-<style>
-  :root {
-    --bradesco-red: #CC092F;
-    --bradesco-dark-red: #9B0522;
-    --text-dark: #333333;
-  }
-
-  .b-navbar {
-    background-color: var(--bradesco-red);
-    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-    position: relative;
-    z-index: 1000;
-  }
-
-  .b-nav-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  /* Marca / Logo */
-  .b-brand {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    color: white;
-  }
-
-  .b-brand-main {
-    font-size: 20px;
-    font-weight: 700;
-    letter-spacing: -0.5px;
-  }
-
-  .b-brand-sub {
-    font-size: 13px;
-    opacity: 0.85;
-    padding-left: 8px;
-    border-left: 1px solid rgba(255, 255, 255, 0.5);
-  }
-
-  /* Menú de Enlaces */
-  .b-nav-menu {
-    display: flex;
-    list-style: none;
-    gap: 8px;
-    margin: 0;
-    padding: 0;
-  }
-
-  .b-nav-link {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 16px;
-    color: rgba(255, 255, 255, 0.88);
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 600;
-    border-radius: 6px;
-    transition: all 0.2s ease;
-  }
-
-  .b-icon {
-    width: 18px;
-    height: 18px;
-  }
-
-  .b-nav-link:hover {
-    color: white;
-    background-color: rgba(255, 255, 255, 0.15);
-  }
-
-  /* Estado Activo */
-  .b-nav-link.active {
-    color: var(--bradesco-red);
-    background-color: white;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  }
-
-  /* Botón Hamburgesa (Móviles) */
-  .b-nav-toggle {
-    display: none;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 26px;
-    height: 18px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-  }
-
-  .b-nav-toggle span {
-    width: 100%;
-    height: 2px;
-    background-color: white;
-    border-radius: 2px;
-    transition: all 0.3s ease;
-  }
-
-  /* Responsivo */
-  @media (max-width: 768px) {
-    .b-nav-toggle {
-      display: flex;
-    }
-
-    .b-nav-menu {
-      position: absolute;
-      top: 60px;
-      left: 0;
-      right: 0;
-      background-color: var(--bradesco-red);
-      flex-direction: column;
-      padding: 15px 20px;
-      gap: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-      display: none;
-    }
-
-    .b-nav-menu.open {
-      display: flex;
-    }
-
-    .b-nav-link {
-      padding: 12px 16px;
-      width: 100%;
-    }
-  }
-</style>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    // 1. Detectar página actual y marcar enlace activo
-    const path = window.location.pathname.split('/').pop() || 'index.html';
-    
-    if (path === 'index.html' || path === '') {
-      document.getElementById('nav-home')?.classList.add('active');
-    } else if (path === 'correos.html') {
-      document.getElementById('nav-correos')?.classList.add('active');
-    } else if (path === 'script.html') {
-      document.getElementById('nav-script')?.classList.add('active');
-    }
-
-    // 2. Toggle menú hamburguesa en móviles
-    const toggleBtn = document.getElementById('bNavToggle');
-    const menu = document.getElementById('bNavMenu');
-
-    if (toggleBtn && menu) {
-      toggleBtn.addEventListener('click', function() {
-        menu.classList.toggle('open');
-      });
-    }
-  });
-</script>
+      <ul class="b-nav-menu" id="bNavMenu">
+        <li class="b-nav-item"><a href="index.html" class="b-nav-link" id="nav-home">Inicio</a></li>
+        <li class="b-nav-item"><a href="correos.html" class="b-nav-link" id="nav-correos">Generador de Correos</a></li>
+        <li class="b-nav-item"><a href="script.html" class="b-nav-link active" id="nav-script">Generador de Scripts</a></li>
+      </ul>
+    </div>
+  </nav>
 
   <div class="main-container">
     
     <!-- PANEL DE EDICIÓN -->
     <div class="editor-panel">
       
-      <!-- Datos Generales -->
+      <!-- 1. DATOS GENERALES -->
       <div class="scene-card">
         <div class="form-group">
           <label for="script-title">Título del Video / Proyecto</label>
-          <input type="text" id="script-title" value="Promocional Producto Novedoso" oninput="updatePreview()">
+          <input type="text" id="script-title" value="Promocional Beneficios Bradesco" oninput="updatePreview()">
         </div>
       </div>
 
-      <!-- Contenedor de Escenas Dinámicas -->
+      <!-- 2. PLANIFICACIÓN DE GRABACIÓN (NUEVO) -->
+      <div class="scene-card">
+        <div class="section-title">Datos de Grabación</div>
+        
+        <div class="form-group">
+          <label for="record-date">Fecha Estimada de Grabación:</label>
+          <input type="date" id="record-date" oninput="updatePreview()">
+        </div>
+
+        <!-- Personas involucradas modulares -->
+        <div class="form-group">
+          <label>Personas Involucradas (Talento / Equipo):</label>
+          <div id="people-container"></div>
+          <button type="button" class="btn btn-subtle" onclick="addPerson()">+ Añadir Persona</button>
+        </div>
+
+        <!-- Horarios modulares -->
+        <div class="form-group" style="margin-top: 14px;">
+          <label>Horarios de Grabación / Llamados:</label>
+          <div id="schedule-container"></div>
+          <button type="button" class="btn btn-subtle" onclick="addSchedule()">+ Añadir Horario</button>
+        </div>
+      </div>
+
+      <!-- 3. ESCENAS MODULARES -->
       <div id="scenes-container"></div>
 
       <div class="add-scene-container">
@@ -441,6 +423,24 @@
       <div class="preview-container">
         <div class="script-paper" id="script-paper">
           <h2 id="preview-title">Título del Video</h2>
+          
+          <!-- Ficha de grabación arriba del documento -->
+          <div class="info-box" id="preview-production-box">
+            <div class="info-box-row" id="preview-date-row">
+              <span class="info-box-label">Fecha de Grabación:</span>
+              <span id="preview-date-val">Pendiente</span>
+            </div>
+            <div class="info-box-row" id="preview-people-row">
+              <span class="info-box-label">Participantes:</span>
+              <span id="preview-people-val">-</span>
+            </div>
+            <div class="info-box-row" id="preview-schedule-row">
+              <span class="info-box-label">Horarios / Convocatoria:</span>
+              <span id="preview-schedule-val">-</span>
+            </div>
+          </div>
+
+          <!-- Tabla de Escenas -->
           <table class="script-table">
             <thead>
               <tr>
@@ -461,8 +461,49 @@
 
   <script>
     let sceneCount = 0;
+    let personCount = 0;
+    let scheduleCount = 0;
 
-    // Agregar escena dinámicamente
+    // NAVBAR RESPONSIVE
+    document.getElementById('bNavToggle')?.addEventListener('click', function() {
+      document.getElementById('bNavMenu')?.classList.toggle('open');
+    });
+
+    // MODULO: PERSONAS INVOLUCRADAS
+    function addPerson(name = '', role = '') {
+      personCount++;
+      const id = `person-${personCount}`;
+      const container = document.getElementById('people-container');
+      const div = document.createElement('div');
+      div.className = 'dynamic-row';
+      div.id = id;
+      div.innerHTML = `
+        <input type="text" class="person-name" placeholder="Nombre completo" value="${name}" oninput="updatePreview()">
+        <input type="text" class="person-role" placeholder="Rol (ej. Conductor, Cámara)" value="${role}" oninput="updatePreview()">
+        <button type="button" class="btn-delete" onclick="removeElement('${id}')">✕</button>
+      `;
+      container.appendChild(div);
+      updatePreview();
+    }
+
+    // MODULO: HORARIOS DE GRABACIÓN
+    function addSchedule(time = '', desc = '') {
+      scheduleCount++;
+      const id = `sched-${scheduleCount}`;
+      const container = document.getElementById('schedule-container');
+      const div = document.createElement('div');
+      div.className = 'dynamic-row';
+      div.id = id;
+      div.innerHTML = `
+        <input type="text" class="sched-time" placeholder="Horario (ej. 10:00 - 11:30 AM)" value="${time}" oninput="updatePreview()" style="max-width: 170px;">
+        <input type="text" class="sched-desc" placeholder="Actividad (ej. Bloque de tomas directas)" value="${desc}" oninput="updatePreview()">
+        <button type="button" class="btn-delete" onclick="removeElement('${id}')">✕</button>
+      `;
+      container.appendChild(div);
+      updatePreview();
+    }
+
+    // MODULO: ESCENAS
     function addScene(defaultText = '', defaultVisual = '') {
       sceneCount++;
       const container = document.getElementById('scenes-container');
@@ -473,16 +514,16 @@
       sceneCard.id = sceneId;
       sceneCard.innerHTML = `
         <div class="scene-header">
-          <span class="scene-title">Escena <span class="scene-number"></span></span>
-          <button class="btn-delete" onclick="removeScene('${sceneId}')">Eliminar</button>
+          <span class="section-title" style="margin: 0;">Escena <span class="scene-number"></span></span>
+          <button type="button" class="btn-delete" onclick="removeScene('${sceneId}')">Eliminar</button>
         </div>
         <div class="form-group">
           <label>Guión (Texto o Diálogo):</label>
-          <textarea class="scene-text" placeholder="Ej. ¡Hola! ¿Conocías este nuevo beneficio..." oninput="updatePreview()">${defaultText}</textarea>
+          <textarea class="scene-text" placeholder="Ej. ¡Hola! Te presentamos este nuevo proceso..." oninput="updatePreview()">${defaultText}</textarea>
         </div>
         <div class="form-group">
           <label>Detalles Visuales (Imagen / Video / Plano):</label>
-          <textarea class="scene-visual" placeholder="Ej. Primer plano de persona sonriendo mostrando pantalla del celular..." oninput="updatePreview()">${defaultVisual}</textarea>
+          <textarea class="scene-visual" placeholder="Ej. Plano medio con laptop mostrando la intranet corporativa..." oninput="updatePreview()">${defaultVisual}</textarea>
         </div>
       `;
 
@@ -491,43 +532,66 @@
       updatePreview();
     }
 
-    // Eliminar escena
-    function removeScene(id) {
-      const card = document.getElementById(id);
-      if (card) {
-        card.remove();
-        renumberScenes();
-        updatePreview();
-      }
+    function removeElement(id) {
+      document.getElementById(id)?.remove();
+      updatePreview();
     }
 
-    // Renumerar escenas secuencialmente
+    function removeScene(id) {
+      document.getElementById(id)?.remove();
+      renumberScenes();
+      updatePreview();
+    }
+
     function renumberScenes() {
       const cards = document.querySelectorAll('#scenes-container .scene-card');
       cards.forEach((card, index) => {
-        const numberSpan = card.querySelector('.scene-number');
-        if (numberSpan) numberSpan.textContent = index + 1;
+        const span = card.querySelector('.scene-number');
+        if (span) span.textContent = index + 1;
       });
     }
 
-    // Actualizar vista previa
+    // ACTUALIZACIÓN DE VISTA PREVIA
     function updatePreview() {
       // Título
-      const titleVal = document.getElementById('script-title').value || 'Sin Título';
-      document.getElementById('preview-title').textContent = titleVal;
+      const title = document.getElementById('script-title').value || 'Sin Título';
+      document.getElementById('preview-title').textContent = title;
+
+      // Fecha
+      const dateVal = document.getElementById('record-date').value;
+      document.getElementById('preview-date-val').textContent = dateVal || 'Sin fecha definida';
+
+      // Personas
+      const peopleRows = document.querySelectorAll('#people-container .dynamic-row');
+      const peopleArr = [];
+      peopleRows.forEach(row => {
+        const name = row.querySelector('.person-name').value.trim();
+        const role = row.querySelector('.person-role').value.trim();
+        if (name) peopleArr.push(role ? `${name} (${role})` : name);
+      });
+      document.getElementById('preview-people-val').textContent = peopleArr.length ? peopleArr.join(' • ') : 'No se especificaron participantes';
+
+      // Horarios
+      const schedRows = document.querySelectorAll('#schedule-container .dynamic-row');
+      const schedArr = [];
+      schedRows.forEach(row => {
+        const time = row.querySelector('.sched-time').value.trim();
+        const desc = row.querySelector('.sched-desc').value.trim();
+        if (time || desc) schedArr.push(`${time ? '[' + time + ']' : ''} ${desc}`.trim());
+      });
+      document.getElementById('preview-schedule-val').textContent = schedArr.length ? schedArr.join(' | ') : 'No se especificaron horarios';
 
       // Escenas
       const tableBody = document.getElementById('preview-table-body');
       tableBody.innerHTML = '';
+      const scenes = document.querySelectorAll('#scenes-container .scene-card');
 
-      const cards = document.querySelectorAll('#scenes-container .scene-card');
-      
-      if (cards.length === 0) {
+      if (scenes.length === 0) {
         tableBody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: #94A3B8;">No hay escenas agregadas.</td></tr>';
         return;
       }
 
-      cards.forEach((card, index) => {
+      scenes.forEach((card, index) => {
         const textVal = card.querySelector('.scene-text').value.replace(/\n/g, '<br>') || '-';
         const visualVal = card.querySelector('.scene-visual').value.replace(/\n/g, '<br>') || '-';
 
@@ -541,13 +605,47 @@
       });
     }
 
-    // Exportar archivo TXT estructurado
+    // EXPORTACIÓN TXT
     function exportTXT() {
       const title = document.getElementById('script-title').value || 'Script_Video';
+      const dateVal = document.getElementById('record-date').value || 'No asignada';
+
       let content = `====================================================\n`;
       content += `GUION TÉCNICO DE VIDEO: ${title.toUpperCase()}\n`;
       content += `====================================================\n\n`;
 
+      content += `DATOS DE PRODUCCIÓN:\n`;
+      content += `----------------------------------------------------\n`;
+      content += `Fecha de Grabación: ${dateVal}\n`;
+
+      // Participantes
+      const peopleRows = document.querySelectorAll('#people-container .dynamic-row');
+      content += `Participantes:\n`;
+      if (peopleRows.length) {
+        peopleRows.forEach(row => {
+          const name = row.querySelector('.person-name').value.trim();
+          const role = row.querySelector('.person-role').value.trim();
+          if (name) content += ` • ${name} ${role ? '(' + role + ')' : ''}\n`;
+        });
+      } else {
+        content += ` • Sin participantes especificados\n`;
+      }
+
+      // Horarios
+      const schedRows = document.querySelectorAll('#schedule-container .dynamic-row');
+      content += `Horarios / Llamados:\n`;
+      if (schedRows.length) {
+        schedRows.forEach(row => {
+          const time = row.querySelector('.sched-time').value.trim();
+          const desc = row.querySelector('.sched-desc').value.trim();
+          if (time || desc) content += ` • ${time}: ${desc}\n`;
+        });
+      } else {
+        content += ` • Sin horarios registrados\n`;
+      }
+      content += `\n====================================================\n\n`;
+
+      // Escenas
       const cards = document.querySelectorAll('#scenes-container .scene-card');
       cards.forEach((card, index) => {
         const textVal = card.querySelector('.scene-text').value || 'Sin texto';
@@ -571,15 +669,15 @@
       URL.revokeObjectURL(url);
     }
 
-    // Generar PDF mediante el cuadro de impresión del navegador
     function printPDF() {
       window.print();
     }
 
-    // Cargar escenas iniciales de ejemplo
+    // Datos iniciales demostrativos
     window.onload = function() {
-      addScene('¡Hola a todos! Hoy les queremos mostrar algo genial...', 'Toma rápida de apertura, texto animado en pantalla.');
-      addScene('Con esta nueva función podrás optimizar tu tiempo.', 'Demostración en pantalla del celular mostrando la app.');
+      addPerson('Carlos Morales', 'Locutor');
+      addSchedule('09:30 AM', 'Llamado a set y pruebas de audio');
+      addScene('¡Hola a todos! Te invitamos a conocer el nuevo procedimiento de comunicación interna...', 'Tomas dinámicas en oficina abierta, texto animado de apertura.');
     };
   </script>
 </body>
