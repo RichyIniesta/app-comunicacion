@@ -81,7 +81,7 @@
     .preview-toolbar h2 { font-size: 15px; font-weight: 700; color: var(--text-dark); }
     .preview-actions { display: flex; gap: 10px; }
 
-    /* CONTENEDOR DE LA VISTA PREVIA LIMPIO Y CENTRADO */
+    /* CONTENEDOR DE VISTA PREVIA */
     .iframe-container {
       flex: 1;
       padding: 0;
@@ -204,7 +204,7 @@
   <div class="main-container">
     <div class="editor-panel">
       
-      <!-- CONTENEDOR DE BLOQUES 100% DINÁMICOS Y REORDENABLES -->
+      <!-- CONTENEDOR DE BLOQUES REORDENABLES -->
       <div id="blocks-container"></div>
 
       <!-- BARRA DE AGREGAR BLOQUES -->
@@ -263,14 +263,13 @@
       }
     }
 
-    // GENERADOR DE TOOLBAR CON COLOR Y TAMAÑO
+    // BARRA DE FORMATO CON COLOR Y TAMAÑO
     function getToolbarHTML(editorId) {
       return `
         <div class="wysiwyg-toolbar">
           <button type="button" class="wysiwyg-btn" onclick="execFormat('${editorId}', 'bold')"><b>B</b></button>
           <button type="button" class="wysiwyg-btn" onclick="execFormat('${editorId}', 'italic')"><i>I</i></button>
           
-          <!-- Selector Estricto de Colores Corporativos -->
           <select class="wysiwyg-select" onchange="applyColor('${editorId}', this.value); this.selectedIndex=0;">
             <option value="" disabled selected>🎨 Color</option>
             <option value="#CC092F" style="color:#CC092F; font-weight:bold;">Rojo Bradesco</option>
@@ -278,7 +277,6 @@
             <option value="#6E6E6E" style="color:#6E6E6E; font-weight:bold;">Gris Secundario</option>
           </select>
 
-          <!-- Selector de Tamaño de Fuente -->
           <select class="wysiwyg-select" onchange="applyFontSize('${editorId}', this.value); this.selectedIndex=0;">
             <option value="" disabled selected>📏 Tamaño</option>
             <option value="13px">13px (Pequeño)</option>
@@ -297,7 +295,6 @@
       `;
     }
 
-    // CREACIÓN MODULAR DE BLOQUES
     function addBlock(type, initialData = {}) {
       blockCount++;
       const id = `block-${blockCount}`;
@@ -308,7 +305,6 @@
       card.dataset.type = type;
       card.draggable = true;
 
-      // Eventos Drag and Drop
       card.addEventListener('dragstart', handleDragStart);
       card.addEventListener('dragover', handleDragOver);
       card.addEventListener('dragleave', handleDragLeave);
@@ -433,7 +429,6 @@
       updatePreview();
     }
 
-    // FORMATEADORES WYSIWYG
     function execFormat(editorId, command) {
       const editor = document.getElementById(editorId);
       editor.focus();
@@ -467,14 +462,13 @@
       updatePreview();
     }
 
-    // GESTIÓN DE ORDEN DE BLOQUES
     function moveBlock(id, direction) {
       const card = document.getElementById(id);
       if (!card) return;
       if (direction === -1 && card.previousElementSibling) {
         card.parentNode.insertBefore(card, card.previousElementSibling);
       } else if (direction === 1 && card.nextElementSibling) {
-        card.parentNode.insertBefore(card.nextElementSibling, card);
+        card.parentNode.insertBefore(card, card.nextElementSibling);
       }
       updatePreview();
     }
@@ -484,7 +478,6 @@
       updatePreview();
     }
 
-    // DRAG AND DROP HANDLERS
     let draggedItem = null;
 
     function handleDragStart(e) {
@@ -526,7 +519,7 @@
       document.querySelectorAll('.block-card').forEach(c => c.classList.remove('drag-over'));
     }
 
-    // CONSTRUCCIÓN DEL CORREO FINAL
+    // CONSTRUCCIÓN DEL CORREO CON PROFUNDIDAD Y SOMBRAS FLOTANTES
     function buildHTML() {
       if (!rawTemplate) return "";
       let output = rawTemplate;
@@ -557,18 +550,20 @@
         else if (type === 'destacado') {
           const titleEd = block.querySelectorAll('.wysiwyg-editor')[0];
           const textEd = block.querySelectorAll('.wysiwyg-editor')[1];
-          blocksHTML += `\n<!-- 04_BLOQUE_DESTACADO -->\n<tr>\n<td style="padding: 10px 45px 25px 45px;" align="center">\n<table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background-color: #F8F8F8; border-top: 5px solid #CC092F; width: 100%;">\n<tr>\n<td style="padding: 22px; font-family: Arial, Helvetica, sans-serif; text-align: center;" align="center">\n${titleEd.innerHTML}\n<div style="margin-top: 10px; line-height: 24px;">\n${textEd.innerHTML}\n</div>\n</td>\n</tr>\n</table>\n</td>\n</tr>\n`;
+          // Sombra ligera flotante en el cuadro destacado
+          blocksHTML += `\n<!-- 04_BLOQUE_DESTACADO -->\n<tr>\n<td style="padding: 10px 45px 25px 45px;" align="center">\n<table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background-color: #F8F8F8; border-top: 5px solid #CC092F; width: 100%; border-radius: 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid #ECECEC; border-top: 5px solid #CC092F;">\n<tr>\n<td style="padding: 22px; font-family: Arial, Helvetica, sans-serif; text-align: center;" align="center">\n${titleEd.innerHTML}\n<div style="margin-top: 10px; line-height: 24px;">\n${textEd.innerHTML}\n</div>\n</td>\n</tr>\n</table>\n</td>\n</tr>\n`;
         }
         else if (type === 'image') {
           const url = block.querySelector('.img-url').value;
           if (url.trim() !== '') {
-            blocksHTML += `\n<!-- 05_IMAGEN -->\n<tr>\n<td align="center" width="600" style="padding: 10px 45px 25px 45px;">\n<img src="${url}" alt="" width="510" style="display: block; width: 100%; max-width: 510px; height: auto; margin: 0 auto;">\n</td>\n</tr>\n`;
+            blocksHTML += `\n<!-- 05_IMAGEN -->\n<tr>\n<td align="center" width="600" style="padding: 10px 45px 25px 45px;">\n<img src="${url}" alt="" width="510" style="display: block; width: 100%; max-width: 510px; height: auto; margin: 0 auto; border-radius: 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.06);">\n</td>\n</tr>\n`;
           }
         }
         else if (type === 'button') {
           const text = block.querySelector('.btn-text').value;
           const url = block.querySelector('.btn-url').value;
-          blocksHTML += `\n<!-- 06_BOTON -->\n<tr>\n<td style="padding: 10px 45px 30px 45px;" align="center">\n<table border="0" cellspacing="0" cellpadding="0" role="presentation" align="center">\n<tr>\n<td align="center" bgcolor="#CC092F" style="border-radius: 4px; background-color: #CC092F;">\n<a href="${url}" target="_blank" style="font-size: 16px; font-family: Arial, Helvetica, sans-serif; color: #FFFFFF; text-decoration: none; border-radius: 4px; padding: 14px 30px; border: 1px solid #CC092F; display: inline-block; font-weight: bold; min-width: 200px;">${text}</a>\n</td>\n</tr>\n</table>\n</td>\n</tr>\n`;
+          // Sombra ligera flotante en el botón
+          blocksHTML += `\n<!-- 06_BOTON -->\n<tr>\n<td style="padding: 10px 45px 30px 45px;" align="center">\n<table border="0" cellspacing="0" cellpadding="0" role="presentation" align="center">\n<tr>\n<td align="center" bgcolor="#CC092F" style="border-radius: 4px; background-color: #CC092F; box-shadow: 0 4px 10px rgba(204,9,47,0.22);">\n<a href="${url}" target="_blank" style="font-size: 16px; font-family: Arial, Helvetica, sans-serif; color: #FFFFFF; text-decoration: none; border-radius: 4px; padding: 14px 30px; border: 1px solid #CC092F; display: inline-block; font-weight: bold; min-width: 200px;">${text}</a>\n</td>\n</tr>\n</table>\n</td>\n</tr>\n`;
         }
       });
 
