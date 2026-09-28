@@ -277,22 +277,22 @@
     }
     function getToolbarHTML(editorId) {
       return `
-        <div class="wysiwyg-toolbar" onmousedown="event.preventDefault();">
-          <button type="button" class="wysiwyg-btn" title="Negritas" onclick="execFormat('${editorId}','bold')"><b>B</b></button>
-          <button type="button" class="wysiwyg-btn" title="Cursiva" onclick="execFormat('${editorId}','italic')"><i>I</i></button>
-          <button type="button" class="wysiwyg-btn" title="Subrayado" onclick="execFormat('${editorId}','underline')"><u>U</u></button>
+        <div class="wysiwyg-toolbar">
+          <button type="button" onmousedown="event.preventDefault()" class="wysiwyg-btn" title="Negritas" onclick="execFormat('${editorId}','bold')"><b>B</b></button>
+          <button type="button" onmousedown="event.preventDefault()" class="wysiwyg-btn" title="Cursiva" onclick="execFormat('${editorId}','italic')"><i>I</i></button>
+          <button type="button" onmousedown="event.preventDefault()" class="wysiwyg-btn" title="Subrayado" onclick="execFormat('${editorId}','underline')"><u>U</u></button>
           <span class="wysiwyg-divider"></span>
-          <select class="wysiwyg-select" onchange="applyColor('${editorId}',this.value);this.selectedIndex=0"><option value="" disabled selected>Color</option><option value="#CC092F">Rojo Bradesco</option><option value="#333333">Negro</option><option value="#6E6E6E">Gris</option></select>
-          <select class="wysiwyg-select" onchange="applyFontSize('${editorId}',this.value);this.selectedIndex=0"><option value="" disabled selected>Tamaño</option><option value="13px">13 px</option><option value="14px">14 px</option><option value="16px">16 px</option><option value="18px">18 px</option><option value="20px">20 px</option><option value="24px">24 px</option><option value="30px">30 px</option></select>
+          <select onmousedown="saveSelection('${editorId}')" class="wysiwyg-select" onchange="applyColor('${editorId}',this.value);this.selectedIndex=0"><option value="" disabled selected>Color</option><option value="#CC092F">Rojo Bradesco</option><option value="#333333">Negro</option><option value="#6E6E6E">Gris</option></select>
+          <select onmousedown="saveSelection('${editorId}')" class="wysiwyg-select" onchange="applyFontSize('${editorId}',this.value);this.selectedIndex=0"><option value="" disabled selected>Tamaño</option><option value="13px">13 px</option><option value="14px">14 px</option><option value="16px">16 px</option><option value="18px">18 px</option><option value="20px">20 px</option><option value="24px">24 px</option><option value="30px">30 px</option></select>
           <span class="wysiwyg-divider"></span>
-          <button type="button" class="wysiwyg-btn" title="Izquierda" onclick="execFormat('${editorId}','justifyLeft')">←</button>
-          <button type="button" class="wysiwyg-btn" title="Centrar" onclick="execFormat('${editorId}','justifyCenter')">↔</button>
-          <button type="button" class="wysiwyg-btn" title="Derecha" onclick="execFormat('${editorId}','justifyRight')">→</button>
-          <button type="button" class="wysiwyg-btn" title="Justificar texto" onclick="execFormat('${editorId}','justifyFull')">☰</button>
+          <button type="button" onmousedown="event.preventDefault()" class="wysiwyg-btn" title="Izquierda" onclick="execFormat('${editorId}','justifyLeft')">←</button>
+          <button type="button" onmousedown="event.preventDefault()" class="wysiwyg-btn" title="Centrar" onclick="execFormat('${editorId}','justifyCenter')">↔</button>
+          <button type="button" onmousedown="event.preventDefault()" class="wysiwyg-btn" title="Derecha" onclick="execFormat('${editorId}','justifyRight')">→</button>
+          <button type="button" onmousedown="event.preventDefault()" class="wysiwyg-btn" title="Justificar texto" onclick="execFormat('${editorId}','justifyFull')">☰</button>
           <span class="wysiwyg-divider"></span>
-          <button type="button" class="wysiwyg-btn" title="Viñetas" onclick="execFormat('${editorId}','insertUnorderedList')">• Lista</button>
-          <button type="button" class="wysiwyg-btn" title="Numeración" onclick="execFormat('${editorId}','insertOrderedList')">1. Lista</button>
-          <button type="button" class="wysiwyg-btn" title="Quitar formato" onclick="execFormat('${editorId}','removeFormat')">Tx</button>
+          <button type="button" onmousedown="event.preventDefault()" class="wysiwyg-btn" title="Viñetas" onclick="execFormat('${editorId}','insertUnorderedList')">• Lista</button>
+          <button type="button" onmousedown="event.preventDefault()" class="wysiwyg-btn" title="Numeración" onclick="execFormat('${editorId}','insertOrderedList')">1. Lista</button>
+          <button type="button" onmousedown="event.preventDefault()" class="wysiwyg-btn" title="Quitar formato" onclick="execFormat('${editorId}','removeFormat')">Tx</button>
         </div>`;
     }
 
@@ -442,10 +442,12 @@
     }
     function applyFontSize(editorId,sizePixel){
       if(!sizePixel)return; const editor=document.getElementById(editorId); if(!editor)return;
-      restoreSelection(editorId); document.execCommand('styleWithCSS',false,true);
+      restoreSelection(editorId);
+      document.execCommand('styleWithCSS',false,true);
       document.execCommand('fontSize',false,'7');
       editor.querySelectorAll('font[size="7"]').forEach(font=>{font.removeAttribute('size');font.style.fontSize=sizePixel;});
-      saveSelection(editorId); updatePreview();
+      saveSelection(editorId);
+      updatePreview();
     }
 
     function moveBlock(id,direction){
