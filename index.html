@@ -5,62 +5,367 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bradesco | Herramientas de Comunicación</title>
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="bradesco-ui.css">
   <style>
-    :root { --bradesco-red:#CC092F;--bradesco-dark-red:#9B0522;--bg-gray:#F4F4F4;--card-bg:#FFFFFF;--text-dark:#333333;--text-muted:#6E6E6E;--border-color:#E0E0E0; }
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:'Open Sans',Arial,sans-serif;background-color:var(--bg-gray);color:var(--text-dark);min-height:100vh;display:flex;flex-direction:column}
-    header{background-color:var(--bradesco-red);color:white;padding:30px 20px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,.15)}
-    header h1{font-size:28px;font-weight:700;margin-bottom:8px} header p{font-size:15px;opacity:.95}
-    .tools-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:25px}
-    .tool-card{background:var(--card-bg);border-radius:12px;border:1px solid var(--border-color);padding:30px;box-shadow:0 4px 12px rgba(0,0,0,.05);transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;display:flex;flex-direction:column;justify-content:space-between;text-decoration:none;color:inherit}
-    .tool-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(204,9,47,.12);border-color:var(--bradesco-red)}
-    .card-icon{width:48px;height:48px;background:#FFF5F5;color:var(--bradesco-red);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:20px}
-    .tool-card h2{font-size:20px;color:var(--text-dark);margin-bottom:10px;font-weight:700}
-    .tool-card p{font-size:14px;color:var(--text-muted);line-height:1.6;margin-bottom:25px}
-    .card-button{display:inline-flex;align-items:center;gap:8px;color:var(--bradesco-red);font-weight:700;font-size:14px}
-    footer{text-align:center;padding:20px;font-size:12px;color:var(--text-muted);border-top:1px solid var(--border-color);background:white;margin-top:40px}
+    :root {
+      --bradesco-red: #CC092F;
+      --bradesco-dark-red: #9B0522;
+      --bg-gray: #F4F4F4;
+      --card-bg: #FFFFFF;
+      --text-dark: #333333;
+      --text-muted: #6E6E6E;
+      --border-color: #E0E0E0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Open Sans', Arial, sans-serif;
+      background-color: var(--bg-gray);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background-color: var(--bradesco-red);
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    }
+
+    header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    header p {
+      font-size: 15px;
+      opacity: 0.95;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 20px;
+      flex: 1;
+    }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 25px;
+    }
+
+    .tool-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      padding: 30px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .tool-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(204, 9, 47, 0.12);
+      border-color: var(--bradesco-red);
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      background-color: #FFF5F5;
+      color: var(--bradesco-red);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .tool-card h2 {
+      font-size: 20px;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .tool-card p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 25px;
+    }
+
+    .card-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--bradesco-red);
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .tool-card:hover .card-button {
+      color: var(--bradesco-dark-red);
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 12px;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border-color);
+      background: white;
+      margin-top: 40px;
+    }
   </style>
 </head>
 <body>
+
+  <!-- BARRA DE NAVEGACIÓN MODERNA -->
 <nav class="b-navbar">
   <div class="b-nav-container">
-    <a href="index.html" class="b-brand"><img src="Bradesco_H_White_RGB.png" alt="bradesco" height="50"></a>
-    <button class="b-nav-toggle" id="bNavToggle" aria-label="Abrir menú"><span></span><span></span><span></span></button>
+    <!-- Brand / Logo -->
+    <a href="index.html" class="b-brand">
+      <img src="Bradesco_H_White_RGB.png" alt="bradesco" height="50">
+    </a>
+
+    <!-- Hamburguesa Móvil -->
+    <button class="b-nav-toggle" id="bNavToggle" aria-label="Abrir menú">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <!-- Menú de Enlaces -->
     <ul class="b-nav-menu" id="bNavMenu">
-      <li class="b-nav-item"><a href="index.html" class="b-nav-link" id="nav-home"><svg class="b-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M10 20v-6h4v6h5v-8h3L12 3L2 12h3v8z"/></svg>Inicio</a></li>
-      <li class="b-nav-item"><a href="correos.html" class="b-nav-link" id="nav-correos"><svg class="b-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5l-8-5V6l8 5l8-5v2z"/></svg>Generador de Correos</a></li>
-      <li class="b-nav-item"><a href="script.html" class="b-nav-link" id="nav-script"><svg class="b-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H9l2 4H8L6 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"/></svg>Generador de Scripts</a></li>
+      <li class="b-nav-item">
+        <a href="index.html" class="b-nav-link" id="nav-home">
+          <svg class="b-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M10 20v-6h4v6h5v-8h3L12 3L2 12h3v8z"/></svg>
+          Inicio
+        </a>
+      </li>
+      <li class="b-nav-item">
+        <a href="correos.html" class="b-nav-link" id="nav-correos">
+          <svg class="b-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5l-8-5V6l8 5l8-5v2z"/></svg>
+          Generador de Correos
+        </a>
+      </li>
+      <li class="b-nav-item">
+        <a href="script.html" class="b-nav-link" id="nav-script">
+          <svg class="b-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H9l2 4H8L6 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"/></svg>
+          Generador de Scripts
+        </a>
+      </li>
     </ul>
   </div>
 </nav>
+
+<!-- ESTILOS Y LÓGICA DE LA NAVBAR -->
 <style>
-  .b-navbar{background-color:#CC092F;box-shadow:0 2px 10px rgba(0,0,0,.15);position:relative;z-index:1000}
-  .b-nav-container{max-width:1200px;margin:0 auto;padding:0 20px;height:60px;display:flex;align-items:center;justify-content:space-between}
-  .b-brand{display:flex;align-items:center;gap:8px;text-decoration:none;color:white}
-  .b-nav-menu{display:flex;list-style:none;gap:8px;margin:0;padding:0}
-  .b-nav-link{display:flex;align-items:center;gap:8px;padding:8px 16px;color:rgba(255,255,255,.88);text-decoration:none;font-size:14px;font-weight:600;border-radius:6px;transition:all .2s ease}
-  .b-icon{width:18px;height:18px}.b-nav-link:hover{color:white;background-color:rgba(255,255,255,.15)}
-  .b-nav-link.active{color:#CC092F;background-color:white;box-shadow:0 2px 6px rgba(0,0,0,.1)}
-  .b-nav-toggle{display:none;flex-direction:column;justify-content:space-between;width:26px;height:18px;background:transparent;border:none;cursor:pointer;padding:0}
-  .b-nav-toggle span{width:100%;height:2px;background:white;border-radius:2px;transition:all .3s ease}
-  @media(max-width:768px){.b-nav-toggle{display:flex}.b-nav-menu{position:absolute;top:60px;left:0;right:0;background:#CC092F;flex-direction:column;padding:15px 20px;gap:10px;box-shadow:0 4px 10px rgba(0,0,0,.2);display:none}.b-nav-menu.open{display:flex}.b-nav-link{padding:12px 16px;width:100%}}
+  :root {
+    --bradesco-red: #CC092F;
+    --bradesco-dark-red: #9B0522;
+    --text-dark: #333333;
+  }
+
+  .b-navbar {
+    background-color: var(--bradesco-red);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    position: relative;
+    z-index: 1000;
+  }
+
+  .b-nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* Marca / Logo */
+  .b-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: white;
+  }
+
+  .b-brand-main {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+
+  .b-brand-sub {
+    font-size: 13px;
+    opacity: 0.85;
+    padding-left: 8px;
+    border-left: 1px solid rgba(255, 255, 255, 0.4);
+  }
+
+  /* Menú de Enlaces */
+  .b-nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .b-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    color: rgba(255, 255, 255, 0.88);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+  }
+
+  .b-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .b-nav-link:hover {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+
+  /* Estado Activo */
+  .b-nav-link.active {
+    color: var(--bradesco-red);
+    background-color: white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+
+  /* Botón Hamburgesa (Móviles) */
+  .b-nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 26px;
+    height: 18px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .b-nav-toggle span {
+    width: 100%;
+    height: 2px;
+    background-color: white;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+
+  /* Responsivo */
+  @media (max-width: 768px) {
+    .b-nav-toggle {
+      display: flex;
+    }
+
+    .b-nav-menu {
+      position: absolute;
+      top: 60px;
+      left: 0;
+      right: 0;
+      background-color: var(--bradesco-red);
+      flex-direction: column;
+      padding: 15px 20px;
+      gap: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      display: none;
+    }
+
+    .b-nav-menu.open {
+      display: flex;
+    }
+
+    .b-nav-link {
+      padding: 12px 16px;
+      width: 100%;
+    }
+  }
 </style>
+
 <script>
-document.addEventListener('DOMContentLoaded',function(){
- const path=window.location.pathname.split('/').pop()||'index.html';
- if(path==='index.html'||path==='')document.getElementById('nav-home')?.classList.add('active');
- else if(path==='correos.html')document.getElementById('nav-correos')?.classList.add('active');
- else if(path==='script.html')document.getElementById('nav-script')?.classList.add('active');
- const toggleBtn=document.getElementById('bNavToggle'),menu=document.getElementById('bNavMenu');
- if(toggleBtn&&menu)toggleBtn.addEventListener('click',function(){menu.classList.toggle('open')});
-});
+  document.addEventListener('DOMContentLoaded', function() {
+    // 1. Detectar página actual y marcar enlace activo
+    const path = window.location.pathname.split('/').pop() || 'index.html';
+    
+    if (path === 'index.html' || path === '') {
+      document.getElementById('nav-home')?.classList.add('active');
+    } else if (path === 'correos.html') {
+      document.getElementById('nav-correos')?.classList.add('active');
+    } else if (path === 'script.html') {
+      document.getElementById('nav-script')?.classList.add('active');
+    }
+
+    // 2. Toggle menú hamburguesa en móviles
+    const toggleBtn = document.getElementById('bNavToggle');
+    const menu = document.getElementById('bNavMenu');
+
+    if (toggleBtn && menu) {
+      toggleBtn.addEventListener('click', function() {
+        menu.classList.toggle('open');
+      });
+    }
+  });
 </script>
-<main class="container">
-  <div class="tools-grid">
-    <a href="correos-studio.html" class="tool-card"><div><div class="card-icon">✉️</div><h2>Generador de Plantillas de Correo</h2><p>Crea comunicados en formato HTML compatibles con Outlook (Bradesco Informa / Talento). Personaliza textos, banners, módulos destacados y enlaces fácilmente.</p></div><div class="card-button">Abrir Bradesco Studio &rarr;</div></a>
-    <a href="script.html" class="tool-card"><div><div class="card-icon">🎬</div><h2>Generador de Scripts para Videos</h2><p>Crea escaletas y guiones técnicos dinámicos por escenas para videos cortos. Organiza audio, diálogos y detalles visuales con exportación a PDF y TXT.</p></div><div class="card-button">Abrir Generador de Scripts &rarr;</div></a>
-  </div>
-</main>
-<footer>Bradesco México &copy; Todos los derechos reservados.</footer>
-</body></html>
+
+  <main class="container">
+    <div class="tools-grid">
+      
+      <!-- Opción 1: Generador de Correos -->
+      <a href="correos.html" class="tool-card">
+        <div>
+          <div class="card-icon">✉️</div>
+          <h2>Generador de Plantillas de Correo</h2>
+          <p>Crea comunicados en formato HTML compatibles con Outlook (Bradesco Informa / Talento). Personaliza textos, banners, módulos destacados y enlaces fácilmente.</p>
+        </div>
+        <div class="card-button">
+          Abrir Generador de Correos &rarr;
+        </div>
+      </a>
+
+      <!-- Opción 2: Generador de Scripts -->
+      <a href="script.html" class="tool-card">
+        <div>
+          <div class="card-icon">🎬</div>
+          <h2>Generador de Scripts para Videos</h2>
+          <p>Crea escaletas y guiones técnicos dinámicos por escenas para videos cortos. Organiza audio, diálogos y detalles visuales con exportación a PDF y TXT.</p>
+        </div>
+        <div class="card-button">
+          Abrir Generador de Scripts &rarr;
+        </div>
+      </a>
+
+    </div>
+  </main>
+
+  <footer>
+    Bradesco México &copy; Todos los derechos reservados.
+  </footer>
+
+</body>
+</html>
